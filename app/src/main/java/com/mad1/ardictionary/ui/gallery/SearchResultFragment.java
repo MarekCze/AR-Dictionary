@@ -13,17 +13,18 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mad1.ardictionary.R;
+import com.mad1.ardictionary.ui.home.HomeViewModel;
 
 public class SearchResultFragment extends Fragment {
 
-    private SearchResultViewModel searchResultViewModel;
+    private HomeViewModel searchResultViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        searchResultViewModel = new ViewModelProvider(this).get(SearchResultViewModel.class);
+        searchResultViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_search_result, container, false);
 
         final TextView textView = root.findViewById(R.id.text_search_result);
-        searchResultViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        searchResultViewModel.getWord().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
