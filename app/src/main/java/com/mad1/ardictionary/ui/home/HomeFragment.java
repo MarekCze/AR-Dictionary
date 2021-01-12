@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
@@ -22,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.common.util.concurrent.ListenableFuture;
@@ -33,19 +36,37 @@ import java.util.concurrent.Executors;
 
 public class HomeFragment extends Fragment {
 
-    public static final String[] REQUIRED_PERMISSIONS = new String[] {Manifest.permission.CAMERA};
-    public static final int REQUEST_CODE_PERMISSIONS = 1001;
     private HomeViewModel homeViewModel;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
+    private Camera camera;
     private PreviewView previewView;
     private Context context;
-    private Executor analysisExecutor = Executors.newSingleThreadExecutor();
+    private Executor cameraExecutor = Executors.newSingleThreadExecutor();
+    private View root;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        root = inflater.inflate(R.layout.fragment_home, container, false);
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         context = getActivity();
+
+
+
+        homeViewModel.isPermissionsGranted().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                    startCamera();
+            }
+        });
+
+
+
+        return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         previewView = root.findViewById(R.id.previewView);
         previewView.setOnTouchListener(new View.OnTouchListener() {
@@ -61,13 +82,9 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        if(allPermissionsGranted()){
+        if(homeViewModel.isPermissionsGranted().getValue()){
             startCamera();
-        } else {
-            ActivityCompat.requestPermissions(getActivity(), REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
         }
-
-        return root;
     }
 
     public void startCamera(){
@@ -83,6 +100,15 @@ public class HomeFragment extends Fragment {
             }
         }, ContextCompat.getMainExecutor(context));
     } // END startCamera method
+
+    private void stopCamera() {
+        try{
+            cameraProviderFuture.get().unbindAll();
+        } catch(InterruptedException | ExecutionException e){
+
+        }
+
+    }
 
     private void bindPreview(@NonNull ProcessCameraProvider cameraProvider) {
         Rational aspectRatio = new Rational(previewView.getWidth(), previewView.getHeight());
@@ -113,24 +139,6 @@ public class HomeFragment extends Fragment {
         cameraProvider.bindToLifecycle((LifecycleOwner) context, cameraSelector, preview);
     } // END bindPreview method
 
-    public boolean allPermissionsGranted(){
-        for(String permission : REQUIRED_PERMISSIONS){
-            if(ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED){
-                return false;
-            }
-        }
-        return true;
-    } // END allPermissionsGranted method
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == REQUEST_CODE_PERMISSIONS){
-            if(allPermissionsGranted()){
-                startCamera();
-            } else {
-                Toast.makeText(context, "Permissions denied", Toast.LENGTH_SHORT).show();
-            }
-        }
-    } // END onRequestPermissionResult method
 
 }

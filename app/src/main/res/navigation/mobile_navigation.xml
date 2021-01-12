@@ -10,5 +10,10 @@
         android:name="com.mad1.ardictionary.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/nav_search_result"
+        android:name="com.mad1.ardictionary.ui.gallery.SearchResultFragment"
+        android:label="@string/menu_search_result"
+        tools:layout="@layout/fragment_search_result" />
 
 </navigation>

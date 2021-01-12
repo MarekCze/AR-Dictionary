@@ -18,6 +18,15 @@ public class HomeViewModel extends ViewModel {
 
     private MutableLiveData<String> word;
     private int x, y;
+    private MutableLiveData<Boolean> isPermissionsGranted;
+
+    public MutableLiveData<Boolean> isPermissionsGranted() {
+        return isPermissionsGranted;
+    }
+
+    public void setPermissionsGranted(boolean permissionsGranted) {
+        isPermissionsGranted.setValue(permissionsGranted);
+    }
 
     public int getX() {
         return x;
@@ -37,7 +46,9 @@ public class HomeViewModel extends ViewModel {
 
     public HomeViewModel() {
         word = new MutableLiveData<>();
+        isPermissionsGranted = new MutableLiveData<>();
         word.setValue("");
+        isPermissionsGranted.setValue(false);
     }
 
     public LiveData<String> getWord() {
@@ -87,8 +98,9 @@ public class HomeViewModel extends ViewModel {
                     }
                     //Log.w("ELEMENT TEXT", elementText);
                     if(elementFrame.contains(x,y)){
-                        Log.w("ELEMENT TEXT", elementText);
+
                         word.setValue(elementText);
+                        Log.w("ELEMENT TEXT", word.getValue());
                     }
                 }
             }
