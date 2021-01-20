@@ -3,14 +3,11 @@ package com.mad1.ardictionary;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
-import com.mad1.ardictionary.ui.home.HomeViewModel;
+import com.mad1.ardictionary.ui.camera.CameraViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -26,10 +23,10 @@ import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String[] REQUIRED_PERMISSIONS = new String[] {Manifest.permission.CAMERA};
+    public static final String[] REQUIRED_PERMISSIONS = new String[] {Manifest.permission.CAMERA, Manifest.permission.INTERNET};
     public static final int REQUEST_CODE_PERMISSIONS = 1001;
     private AppBarConfiguration mAppBarConfiguration;
-    private HomeViewModel homeViewModel;
+    private CameraViewModel homeViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +40,14 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_search_result)
+                R.id.nav_camera, R.id.nav_search_result)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        homeViewModel = new ViewModelProvider(this).get(CameraViewModel.class);
 
         if(allPermissionsGranted()){
             homeViewModel.setPermissionsGranted(true);

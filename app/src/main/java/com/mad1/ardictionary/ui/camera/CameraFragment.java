@@ -1,8 +1,6 @@
-package com.mad1.ardictionary.ui.home;
+package com.mad1.ardictionary.ui.camera;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,23 +17,29 @@ import androidx.camera.core.CameraSelector;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.mlkit.vision.text.Text;
+import com.mad1.ardictionary.MainActivity;
 import com.mad1.ardictionary.R;
+import com.mad1.ardictionary.utils.TextRecognitionHandler;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-public class HomeFragment extends Fragment {
+public class CameraFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private CameraViewModel cameraViewModel;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private Camera camera;
     private PreviewView previewView;
@@ -46,20 +49,16 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.fragment_home, container, false);
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        root = inflater.inflate(R.layout.fragment_camera, container, false);
+        cameraViewModel = new ViewModelProvider(getActivity()).get(CameraViewModel.class);
         context = getActivity();
 
-
-
-        homeViewModel.isPermissionsGranted().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+        cameraViewModel.isPermissionsGranted().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                     startCamera();
             }
         });
-
-
 
         return root;
     }
@@ -73,18 +72,28 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 Bitmap screenshot = previewView.getBitmap();
-                homeViewModel.setX((int)event.getX());
-                homeViewModel.setY((int)event.getY());
-                homeViewModel.runTextRecognition(screenshot);
+                int x = (int) event.getX();
+                int y = (int) event.getY();
 
-                Log.w("TOUCHED", (int)event.getX() + "," + (int)event.getY());
+                TextRecognitionHandler recognizer = new TextRecognitionHandler();
+                recognizer.runTextRecognition(screenshot, x, y, cameraViewModel);
+
+                Log.w("Touch Event", x + "," + y);
                 return true;
             }
         });
 
-        if(homeViewModel.isPermissionsGranted().getValue()){
+        if(cameraViewModel.isPermissionsGranted().getValue()){
             startCamera();
         }
+
+        cameraViewModel.getWord().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String text) {
+
+                Log.w("word changed", text);
+            }
+        });
     }
 
     public void startCamera(){
@@ -93,6 +102,7 @@ public class HomeFragment extends Fragment {
         cameraProviderFuture.addListener(() -> {
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+                cameraProvider.unbindAll();
                 bindPreview(cameraProvider);
             } catch (InterruptedException | ExecutionException e) {
                 // No errors need to be handled for this Future.
@@ -100,15 +110,6 @@ public class HomeFragment extends Fragment {
             }
         }, ContextCompat.getMainExecutor(context));
     } // END startCamera method
-
-    private void stopCamera() {
-        try{
-            cameraProviderFuture.get().unbindAll();
-        } catch(InterruptedException | ExecutionException e){
-
-        }
-
-    }
 
     private void bindPreview(@NonNull ProcessCameraProvider cameraProvider) {
         Rational aspectRatio = new Rational(previewView.getWidth(), previewView.getHeight());

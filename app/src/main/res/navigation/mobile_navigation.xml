@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_camera">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.mad1.ardictionary.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_camera"
+        android:name="com.mad1.ardictionary.ui.camera.CameraFragment"
+        android:label="@string/menu_camera"
+        tools:layout="@layout/fragment_camera" />
     <fragment
         android:id="@+id/nav_search_result"
         android:name="com.mad1.ardictionary.ui.gallery.SearchResultFragment"

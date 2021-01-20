@@ -1,6 +1,7 @@
 package com.mad1.ardictionary.ui.gallery;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,25 +12,43 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.mad1.ardictionary.R;
-import com.mad1.ardictionary.ui.home.HomeViewModel;
+import com.mad1.ardictionary.ui.camera.CameraViewModel;
 
 public class SearchResultFragment extends Fragment {
 
-    private HomeViewModel searchResultViewModel;
+    private CameraViewModel cameraResultViewModel;
+    private TextView textView;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        searchResultViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        cameraResultViewModel = new ViewModelProvider(getActivity()).get(CameraViewModel.class);
         View root = inflater.inflate(R.layout.fragment_search_result, container, false);
 
-        final TextView textView = root.findViewById(R.id.text_search_result);
-        searchResultViewModel.getWord().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        textView = root.findViewById(R.id.text_search_result);
+
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        textView.setText(cameraResultViewModel.wordStr);
+        //Log.w("word text", textView.getText().toString());
+
+        // Create the observer which updates the UI.
+        final Observer<String> wordObserver = new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable final String newName) {
+                // Update the UI, in this case, a TextView
+                Log.w("Changed", "ouajsofdij");
+                textView.setText(newName);
+            }
+        };
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        cameraResultViewModel.getWord().observe(getViewLifecycleOwner(), wordObserver);
+
     }
 }
