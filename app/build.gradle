@@ -8,7 +8,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.mad1.ardictionary"
+        applicationId "ie.lit.ardictionary"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -42,6 +42,12 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:${camerax_version}"
     // If you want to additionally use the CameraX View class
     implementation "androidx.camera:camera-view:1.0.0-alpha20"
+    // GSON to serialize/deserialize JSON objects
+    implementation 'com.google.code.gson:gson:2.8.6'
+    // Retrofit to communicate with APIs
+    implementation 'com.squareup.retrofit2:retrofit:2.9..0'
+    // GSON converter for GSON objects
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'

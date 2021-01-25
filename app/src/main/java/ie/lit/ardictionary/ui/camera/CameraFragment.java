@@ -1,4 +1,4 @@
-package com.mad1.ardictionary.ui.camera;
+package ie.lit.ardictionary.ui.camera;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -23,19 +23,13 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.mlkit.vision.text.Text;
-import com.mad1.ardictionary.MainActivity;
-import com.mad1.ardictionary.R;
-import com.mad1.ardictionary.utils.TextRecognitionHandler;
+import ie.lit.ardictionary.R;
+import ie.lit.ardictionary.utils.TextRecognitionHandler;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class CameraFragment extends Fragment {
 

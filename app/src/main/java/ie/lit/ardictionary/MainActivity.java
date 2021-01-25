@@ -1,4 +1,4 @@
-package com.mad1.ardictionary;
+package ie.lit.ardictionary;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -6,8 +6,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.widget.Toast;
 
+import ie.lit.ardictionary.R;
 import com.google.android.material.navigation.NavigationView;
-import com.mad1.ardictionary.ui.camera.CameraViewModel;
+import ie.lit.ardictionary.ui.camera.CameraViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;

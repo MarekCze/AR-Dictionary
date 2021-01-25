@@ -1,4 +1,4 @@
-package com.mad1.ardictionary.ui.gallery;
+package ie.lit.ardictionary.ui.gallery;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,10 +12,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
-import com.mad1.ardictionary.R;
-import com.mad1.ardictionary.ui.camera.CameraViewModel;
+import ie.lit.ardictionary.R;
+import ie.lit.ardictionary.ui.camera.CameraViewModel;
 
 public class SearchResultFragment extends Fragment {
 

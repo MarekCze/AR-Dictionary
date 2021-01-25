@@ -1,4 +1,4 @@
-package com.mad1.ardictionary.ui.gallery;
+package ie.lit.ardictionary.ui.gallery;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

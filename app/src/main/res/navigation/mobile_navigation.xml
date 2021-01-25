@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/nav_camera"
-        android:name="com.mad1.ardictionary.ui.camera.CameraFragment"
+        android:name="ie.lit.ardictionary.ui.camera.CameraFragment"
         android:label="@string/menu_camera"
         tools:layout="@layout/fragment_camera" />
     <fragment
         android:id="@+id/nav_search_result"
-        android:name="com.mad1.ardictionary.ui.gallery.SearchResultFragment"
+        android:name="ie.lit.ardictionary.ui.gallery.SearchResultFragment"
         android:label="@string/menu_search_result"
         tools:layout="@layout/fragment_search_result" />
 

@@ -1,4 +1,4 @@
-package com.mad1.ardictionary;
+package ie.lit.ardictionary;
 
 import org.junit.Test;
 

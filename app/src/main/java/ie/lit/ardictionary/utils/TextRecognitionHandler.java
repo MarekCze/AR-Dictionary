@@ -1,4 +1,4 @@
-package com.mad1.ardictionary.utils;
+package ie.lit.ardictionary.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -7,23 +7,17 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
-import com.mad1.ardictionary.ui.camera.CameraViewModel;
+import ie.lit.ardictionary.ui.camera.CameraViewModel;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class TextRecognitionHandler {
 
