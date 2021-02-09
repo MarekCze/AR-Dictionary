@@ -1,6 +1,7 @@
 package ie.lit.ardictionary.ui.camera;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,9 +25,20 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.common.util.concurrent.ListenableFuture;
-import ie.lit.ardictionary.R;
-import ie.lit.ardictionary.utils.TextRecognitionHandler;
+import com.google.gson.Gson;
 
+import ie.lit.ardictionary.R;
+import ie.lit.ardictionary.api.DictionaryApi;
+import ie.lit.ardictionary.api.DictionaryApiInterface;
+import ie.lit.ardictionary.model.Word;
+import ie.lit.ardictionary.ui.gallery.SearchResultFragment;
+import ie.lit.ardictionary.utils.TextRecognitionHandler;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -39,12 +51,14 @@ public class CameraFragment extends Fragment {
     private PreviewView previewView;
     private Context context;
     private Executor cameraExecutor = Executors.newSingleThreadExecutor();
+    DictionaryApiInterface dictionaryApiInterface;
     private View root;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_camera, container, false);
         cameraViewModel = new ViewModelProvider(getActivity()).get(CameraViewModel.class);
+        dictionaryApiInterface = DictionaryApi.getClient().create(DictionaryApiInterface.class);
         context = getActivity();
 
         cameraViewModel.isPermissionsGranted().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
@@ -65,14 +79,17 @@ public class CameraFragment extends Fragment {
         previewView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Bitmap screenshot = previewView.getBitmap();
-                int x = (int) event.getX();
-                int y = (int) event.getY();
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    Bitmap screenshot = previewView.getBitmap();
+                    int x = (int) event.getX();
+                    int y = (int) event.getY();
 
-                TextRecognitionHandler recognizer = new TextRecognitionHandler();
-                recognizer.runTextRecognition(screenshot, x, y, cameraViewModel);
+                    TextRecognitionHandler recognizer = new TextRecognitionHandler();
+                    recognizer.runTextRecognition(screenshot, x, y, cameraViewModel);
 
-                Log.w("Touch Event", x + "," + y);
+                    Log.w("Touch Event", x + "," + y);
+                }
+
                 return true;
             }
         });
@@ -84,8 +101,35 @@ public class CameraFragment extends Fragment {
         cameraViewModel.getWord().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String text) {
-
                 Log.w("word changed", text);
+                Call<List<Word>> words = dictionaryApiInterface.getWord(text, "0fb33c6f-c632-467c-8f72-1be2b685075b");
+
+                words.enqueue(new Callback<List<Word>>() {
+                    @Override
+                    public void onResponse(Call<List<Word>> call, Response<List<Word>> response) {
+                        if(response.isSuccessful()){
+                            List<Word> wordList = response.body();
+                            cameraViewModel.setWordDefinition(wordList);
+                            Fragment newFragment = new SearchResultFragment();
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.frameLayout, newFragment, "findThisFragment")
+                                    .addToBackStack(null)
+                                    .commit();
+                            for(Word w : wordList){
+                                Log.w("TAGG", response.body().get(0).getId());
+                            }
+                        }
+
+                        //Log.w("WORD TAG", wordList.get(0).getId());
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Word>> call, Throwable t) {
+                        Log.w("TAG", "Inside OnFailure");
+                        call.cancel();
+                    }
+                });
             }
         });
     }

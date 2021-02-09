@@ -3,9 +3,14 @@ package ie.lit.ardictionary.ui.camera;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.List;
+
+import ie.lit.ardictionary.model.Word;
+
 public class CameraViewModel extends ViewModel {
 
     private MutableLiveData<String> word;
+    private MutableLiveData<List<Word>> wordDefinition;
     public String wordStr;
     private int x, y;
     private MutableLiveData<Boolean> isPermissionsGranted;
@@ -36,6 +41,7 @@ public class CameraViewModel extends ViewModel {
 
     public CameraViewModel() {
         word = new MutableLiveData<>();
+        wordDefinition = new MutableLiveData<>();
         isPermissionsGranted = new MutableLiveData<>();
         isPermissionsGranted.setValue(false);
     }
@@ -44,7 +50,15 @@ public class CameraViewModel extends ViewModel {
         return word;
     }
 
+    public MutableLiveData<List<Word>> getWordDefinition() {
+        return wordDefinition;
+    }
+
     public void setWord(String word) {
         this.word.postValue(word);
+    }
+
+    public void setWordDefinition(List<Word> wordDefinition) {
+        this.wordDefinition.postValue(wordDefinition);
     }
 }
