@@ -57,7 +57,9 @@ public class CameraFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_camera, container, false);
+        // init CameraVieModel
         cameraViewModel = new ViewModelProvider(getActivity()).get(CameraViewModel.class);
+        // init dictionary API
         dictionaryApiInterface = DictionaryApi.getClient().create(DictionaryApiInterface.class);
         context = getActivity();
 
@@ -70,13 +72,14 @@ public class CameraFragment extends Fragment {
 
         return root;
     }
-
+    // init previewView and set listeners once view is created
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         previewView = root.findViewById(R.id.previewView);
         previewView.setOnTouchListener(new View.OnTouchListener() {
+            // create bitmap and send to text recognizer on touch
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
@@ -97,35 +100,32 @@ public class CameraFragment extends Fragment {
         if(cameraViewModel.isPermissionsGranted().getValue()){
             startCamera();
         }
-
+        // observe if a new word is set in ViewModel
         cameraViewModel.getWord().observe(getViewLifecycleOwner(), new Observer<String>() {
+            // if word has changed, call API and wait for response
             @Override
             public void onChanged(String text) {
                 Log.w("word changed", text);
-                Call<List<Word>> words = dictionaryApiInterface.getWord(text, "0fb33c6f-c632-467c-8f72-1be2b685075b");
+                Call<Word> words = dictionaryApiInterface.getWord(text, "0fb33c6f-c632-467c-8f72-1be2b685075b");
 
-                words.enqueue(new Callback<List<Word>>() {
+                words.enqueue(new Callback<Word>() {
+                    // on response from API, get response body and send to SearchResultFragment
                     @Override
-                    public void onResponse(Call<List<Word>> call, Response<List<Word>> response) {
+                    public void onResponse(Call<Word> call, Response<Word> response) {
                         if(response.isSuccessful()){
-                            List<Word> wordList = response.body();
-                            cameraViewModel.setWordDefinition(wordList);
+                            Word word = response.body();
+                            cameraViewModel.setWordDefinition(word);
                             Fragment newFragment = new SearchResultFragment();
                             getActivity().getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.frameLayout, newFragment, "findThisFragment")
                                     .addToBackStack(null)
                                     .commit();
-                            for(Word w : wordList){
-                                Log.w("TAGG", response.body().get(0).getId());
-                            }
                         }
-
                         //Log.w("WORD TAG", wordList.get(0).getId());
-
                     }
 
                     @Override
-                    public void onFailure(Call<List<Word>> call, Throwable t) {
+                    public void onFailure(Call<Word> call, Throwable t) {
                         Log.w("TAG", "Inside OnFailure");
                         call.cancel();
                     }
@@ -140,7 +140,9 @@ public class CameraFragment extends Fragment {
         cameraProviderFuture.addListener(() -> {
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+                // unbind all views from cameraProvider (prevents black screen when switching back to camera fragment)
                 cameraProvider.unbindAll();
+                // bind again after everything has been unbound
                 bindPreview(cameraProvider);
             } catch (InterruptedException | ExecutionException e) {
                 // No errors need to be handled for this Future.
@@ -153,7 +155,7 @@ public class CameraFragment extends Fragment {
         Rational aspectRatio = new Rational(previewView.getWidth(), previewView.getHeight());
 
         Log.d("Rational Value", aspectRatio.toString());
-
+        // create preview, select camera and set previewView as the surface for this preview
         Preview preview = new Preview.Builder()
                 .build();
 

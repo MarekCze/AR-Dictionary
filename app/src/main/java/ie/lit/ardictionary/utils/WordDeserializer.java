@@ -15,52 +15,45 @@ import java.util.List;
 
 import ie.lit.ardictionary.model.Word;
 
-public class WordDeserializer implements JsonDeserializer<List<Word>> {
+public class WordDeserializer implements JsonDeserializer<Word> {
 
     @Override
-    public List<Word> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public Word deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonArray ja = json.getAsJsonArray();
-        List<Word> words = new ArrayList();
+        Word w = new Word();
 
         try{
-            //for(JsonElement je : ja){
-                JsonObject jo = ja.get(0).getAsJsonObject();
-                Word w = new Word();
+            JsonObject jo = ja.get(0).getAsJsonObject();
 
-                    w.setId(jo.get("meta").getAsJsonObject().get("id").getAsString());
-                    w.setOffensive(jo.get("meta").getAsJsonObject().get("offensive").getAsBoolean());
-                    w.setWord(jo.get("meta").getAsJsonObject().get("stems").getAsJsonArray().get(0).getAsString());
+            w.setId(jo.get("meta").getAsJsonObject().get("id").getAsString());
+            w.setOffensive(jo.get("meta").getAsJsonObject().get("offensive").getAsBoolean());
+            w.setWord(jo.get("meta").getAsJsonObject().get("stems").getAsJsonArray().get(0).getAsString());
 
-                    JsonObject hwiObject = jo.get("hwi").getAsJsonObject();
-                    if(hwiObject.has("prs")){
-                        w.setPronunciation(hwiObject.get("prs").getAsJsonArray().get(0).getAsJsonObject().get("mw").getAsString());
-                        w.setAudio(hwiObject.get("prs").getAsJsonArray().get(0).getAsJsonObject().get("sound").getAsJsonObject().get("audio").getAsString());
-                    }
+            JsonObject hwiObject = jo.get("hwi").getAsJsonObject();
+            if(hwiObject.has("prs")){
+                w.setPronunciation(hwiObject.get("prs").getAsJsonArray().get(0).getAsJsonObject().get("mw").getAsString());
+                w.setAudio(hwiObject.get("prs").getAsJsonArray().get(0).getAsJsonObject().get("sound").getAsJsonObject().get("audio").getAsString());
+            }
 
-                    // set shortDefs array
-                    JsonArray shortDefs = jo.get("shortdef").getAsJsonArray();
-                    List<String> shortDefList = new ArrayList();
-                    for(JsonElement el : shortDefs){
-                        shortDefList.add(el.getAsString());
-                    }
-                    w.setShortDefs(shortDefList);
+            // set shortDefs array
+            JsonArray shortDefs = jo.get("shortdef").getAsJsonArray();
+            List<String> shortDefList = new ArrayList();
+            for(JsonElement el : shortDefs){
+                shortDefList.add(el.getAsString());
+            }
+            w.setShortDefs(shortDefList);
 
-                    // set definitions array
-                    //JsonArray definitions = jo.get("def").getAsJsonArray().get(0).getAsJsonObject().get("sseq").getAsJsonArray();
-                    //List<String> defs = new ArrayList();
-                    //for(JsonElement element : definitions){
-                    //    defs.add(element.getAsJsonArray().get(0).getAsJsonArray().get(1).getAsJsonObject().get("dt").getAsJsonArray().get(0).getAsJsonArray().get(1).getAsString());
-                    //}
-                    //w.setDefinitions(defs);
-
-
-
-                words.add(w);
+            // set definitions array
+            //JsonArray definitions = jo.get("def").getAsJsonArray().get(0).getAsJsonObject().get("sseq").getAsJsonArray();
+            //List<String> defs = new ArrayList();
+            //for(JsonElement element : definitions){
+            //    defs.add(element.getAsJsonArray().get(0).getAsJsonArray().get(1).getAsJsonObject().get("dt").getAsJsonArray().get(0).getAsJsonArray().get(1).getAsString());
             //}
+            //w.setDefinitions(defs);
         } catch (JsonParseException e) {
             e.printStackTrace();
         }
 
-        return words;
+        return w;
     }
 }

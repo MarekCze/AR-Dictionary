@@ -21,14 +21,14 @@ import ie.lit.ardictionary.ui.camera.CameraViewModel;
 public class SearchResultFragment extends Fragment {
 
     private CameraViewModel cameraResultViewModel;
-    private TextView word, definition, pronunciation;
+    private TextView wordTextView, definitionTextView, pronunciationTextView;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         cameraResultViewModel = new ViewModelProvider(getActivity()).get(CameraViewModel.class);
         View root = inflater.inflate(R.layout.fragment_search_result, container, false);
 
-        word = root.findViewById(R.id.word);
-        definition = root.findViewById(R.id.definition);
+        wordTextView = root.findViewById(R.id.word);
+        definitionTextView = root.findViewById(R.id.definition);
 
         return root;
     }
@@ -36,15 +36,13 @@ public class SearchResultFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //textView.setText(cameraResultViewModel.wordStr);
-        //Log.w("word text", textView.getText().toString());
 
         // Create the observer which updates the UI.
-        final Observer<List<Word>> wordDefinitionObserver = new Observer<List<Word>>() {
+        final Observer<Word> wordDefinitionObserver = new Observer<Word>() {
             @Override
-            public void onChanged(List<Word> words) {
-                word.setText(words.get(0).getWord());
-                definition.setText(words.get(0).getShortDefs().get(0));
+            public void onChanged(Word word) {
+                wordTextView.setText(word.getWord());
+                definitionTextView.setText(word.getShortDefs().get(0));
             }
         };
 
