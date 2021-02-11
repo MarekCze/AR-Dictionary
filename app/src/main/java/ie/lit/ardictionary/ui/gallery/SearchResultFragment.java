@@ -1,6 +1,8 @@
 package ie.lit.ardictionary.ui.gallery;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +13,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import ie.lit.ardictionary.R;
+import ie.lit.ardictionary.adapter.WordAdapter;
 import ie.lit.ardictionary.model.Word;
 import ie.lit.ardictionary.ui.camera.CameraViewModel;
 
@@ -22,13 +28,17 @@ public class SearchResultFragment extends Fragment {
 
     private CameraViewModel cameraResultViewModel;
     private TextView wordTextView, definitionTextView, pronunciationTextView;
+    private RecyclerView wordRecyclerView;
+    private WordAdapter wordAdapter;
+    private List<Word> words;
+    private View root;
+    private Context context;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         cameraResultViewModel = new ViewModelProvider(getActivity()).get(CameraViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_search_result, container, false);
+        root = inflater.inflate(R.layout.fragment_search_result, container, false);
 
-        wordTextView = root.findViewById(R.id.word);
-        definitionTextView = root.findViewById(R.id.definition);
+        context = getActivity();
 
         return root;
     }
@@ -41,8 +51,16 @@ public class SearchResultFragment extends Fragment {
         final Observer<Word> wordDefinitionObserver = new Observer<Word>() {
             @Override
             public void onChanged(Word word) {
-                wordTextView.setText(word.getWord());
-                definitionTextView.setText(word.getShortDefs().get(0));
+                wordRecyclerView = (RecyclerView) root.findViewById(R.id.word_list_recycler_view);
+                wordAdapter = new WordAdapter(context, words);
+
+                RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 1);
+                wordRecyclerView.setLayoutManager(mLayoutManager);
+                wordRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                wordRecyclerView.setAdapter(wordAdapter);
+
+                words.add(word);
+                wordAdapter.notifyDataSetChanged();
             }
         };
 

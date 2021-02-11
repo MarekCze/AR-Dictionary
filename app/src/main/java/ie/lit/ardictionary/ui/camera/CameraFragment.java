@@ -127,6 +127,7 @@ public class CameraFragment extends Fragment {
                     @Override
                     public void onFailure(Call<Word> call, Throwable t) {
                         Log.w("TAG", "Inside OnFailure");
+                        Log.w("ERR", t.getMessage());
                         call.cancel();
                     }
                 });
