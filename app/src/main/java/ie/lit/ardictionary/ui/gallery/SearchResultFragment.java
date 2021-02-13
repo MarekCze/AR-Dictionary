@@ -3,6 +3,7 @@ package ie.lit.ardictionary.ui.gallery;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ie.lit.ardictionary.R;
@@ -37,7 +39,7 @@ public class SearchResultFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         cameraResultViewModel = new ViewModelProvider(getActivity()).get(CameraViewModel.class);
         root = inflater.inflate(R.layout.fragment_search_result, container, false);
-
+        words = new ArrayList();
         context = getActivity();
 
         return root;
@@ -51,6 +53,13 @@ public class SearchResultFragment extends Fragment {
         final Observer<Word> wordDefinitionObserver = new Observer<Word>() {
             @Override
             public void onChanged(Word word) {
+                Word w = new Word();
+                w.setWord("asdafs");
+                w.setPronunciation("dfhh");
+                Log.w("TAG","pronunciation: " + word.getPronunciation());
+
+                words.add(word);
+
                 wordRecyclerView = (RecyclerView) root.findViewById(R.id.word_list_recycler_view);
                 wordAdapter = new WordAdapter(context, words);
 
@@ -59,8 +68,8 @@ public class SearchResultFragment extends Fragment {
                 wordRecyclerView.setItemAnimator(new DefaultItemAnimator());
                 wordRecyclerView.setAdapter(wordAdapter);
 
-                words.add(word);
-                wordAdapter.notifyDataSetChanged();
+                //words.add(word);
+                //wordAdapter.notifyDataSetChanged();
             }
         };
 
