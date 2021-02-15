@@ -14,13 +14,18 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="GreenTheme" extends="Theme.ARDictionary">
+    <style name="CardView.GreenTheme">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/green_light</item>
-        <item name="colorPrimaryVariant">@color/green_dark</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="android:textColor">#FF4AA17E</item>
-        <item name="android:fontStyle"></item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/green_light</item>
+        <item name="android:textSize">@dimen/word_card_heading_size</item>
+    </style>
+
+    <style name="CardView.RegularFont">
+        <!-- Primary brand color. -->
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/regular_font_size</item>
     </style>
 
     <style name="Theme.ARDictionary.NoActionBar">

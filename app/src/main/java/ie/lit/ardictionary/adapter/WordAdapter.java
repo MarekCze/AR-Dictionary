@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.BulletSpan;
 import android.util.Log;
@@ -94,17 +95,19 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
         return words.size();
     }
 
-    private SpannableString buildDefinitions(List<String> definitions){
+    private SpannableStringBuilder buildDefinitions(List<String> definitions){
 
-        StringBuilder sb = new StringBuilder();
-
+        SpannableStringBuilder sb = new SpannableStringBuilder();
+        int charCount = 0;
         for(String s : definitions){
-            sb.append("\n");
+            CharSequence ch = s;
             sb.append(s);
+            sb.setSpan(new BulletSpan(), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            sb.append("\n");
+            charCount += ch.length() + 1;
         }
-        SpannableString string = new SpannableString(sb);
-        string.setSpan(new BulletSpan(), 10, 22, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return string;
+
+        return sb;
     }
 
 
