@@ -12,6 +12,8 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ie.lit.ardictionary.model.Word;
 
@@ -32,7 +34,8 @@ public class WordDeserializer implements JsonDeserializer<Word> {
             JsonObject hwiObject = jo.get("hwi").getAsJsonObject();
             if(hwiObject.has("prs")){
                 w.setPronunciation(hwiObject.get("prs").getAsJsonArray().get(0).getAsJsonObject().get("mw").getAsString());
-                w.setAudio(hwiObject.get("prs").getAsJsonArray().get(0).getAsJsonObject().get("sound").getAsJsonObject().get("audio").getAsString());
+                String audio = buildAudioUrl(hwiObject.get("prs").getAsJsonArray().get(0).getAsJsonObject().get("sound").getAsJsonObject().get("audio").getAsString());
+                w.setAudio(audio);
             }
 
             // set shortDefs array
@@ -55,5 +58,40 @@ public class WordDeserializer implements JsonDeserializer<Word> {
         }
 
         return w;
+    }
+
+    private String buildAudioUrl(String audio){
+        StringBuilder baseUrl = new StringBuilder();
+        baseUrl.append("https://media.merriam-webster.com/audio/prons/en/us/mp3/");
+        String subdirectory = "";
+
+        String regexBix = "bix[a-zA-Z0-9]+";
+        String regexGg = "gg[a-zA-Z0-9]+";
+        String regexNum = "[0-9][a-zA-Z0-9]+";
+
+        Pattern bixPattern = Pattern.compile(regexBix);
+        Pattern ggPattern = Pattern.compile(regexGg);
+        Pattern numPattern = Pattern.compile(regexNum);
+
+        Matcher matcher;
+
+        if(bixPattern.matcher(audio).matches()){
+            subdirectory = "bix";
+        } else if (ggPattern.matcher(audio).matches()){
+            subdirectory = "gg";
+        } else if (numPattern.matcher(audio).matches()){
+            subdirectory = "number";
+        } else {
+            char c = audio.charAt(0);
+            subdirectory = String.valueOf(c);
+        }
+
+        baseUrl.append(subdirectory);
+        baseUrl.append("/");
+        baseUrl.append(audio);
+        baseUrl.append(".mp3");
+
+
+        return baseUrl.toString();
     }
 }

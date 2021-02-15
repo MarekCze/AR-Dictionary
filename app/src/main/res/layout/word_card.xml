@@ -22,6 +22,8 @@
                 android:id="@+id/wordTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/word_card_heading_size"
+                android:textColor="@color/green_light"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="@dimen/word_card_heading_padding"
@@ -44,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
+                android:background="@color/white"
                 android:layout_marginTop="@dimen/word_card_heading_padding"
                 android:layout_marginEnd="@dimen/word_card_heading_padding"
                 android:src="@drawable/ic_audio_btn" />
@@ -58,14 +61,23 @@
                 android:layout_marginTop="@dimen/word_card_heading_padding"
                 android:text="TextView" />
 
+            <View
+                android:id="@+id/hrLine"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/definitionTextView"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/word_card_heading_padding"
+                android:layout_marginTop="@dimen/word_card_heading_padding"
+                android:background="@color/green_light" />
+
             <TextView
                 android:id="@+id/synonymHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/definitionTextView"
+                android:layout_below="@+id/hrLine"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="@dimen/word_card_heading_padding"
-                android:layout_marginTop="@dimen/word_card_heading_padding"
                 android:text="@string/synonym_heading" />
 
             <TextView

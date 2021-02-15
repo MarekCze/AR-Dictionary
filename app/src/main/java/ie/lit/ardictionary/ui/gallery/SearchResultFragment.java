@@ -53,10 +53,7 @@ public class SearchResultFragment extends Fragment {
         final Observer<Word> wordDefinitionObserver = new Observer<Word>() {
             @Override
             public void onChanged(Word word) {
-                Word w = new Word();
-                w.setWord("asdafs");
-                w.setPronunciation("dfhh");
-                Log.w("TAG","pronunciation: " + word.getPronunciation());
+                Log.w("TAG","audio: " + word.getAudio());
 
                 words.add(word);
 

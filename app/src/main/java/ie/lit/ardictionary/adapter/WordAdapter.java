@@ -2,9 +2,11 @@ package ie.lit.ardictionary.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.BulletSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.List;
 
 import ie.lit.ardictionary.R;
@@ -27,6 +30,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
 
     private Context context;
     private List<Word> words;
+    private boolean isPlaying = false;
 
     public class WordViewHolder extends RecyclerView.ViewHolder {
         public TextView wordTextView, pronunciationTextView, definitionTextView, synonymTextView;
@@ -62,6 +66,27 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
         holder.wordTextView.setText(word.getWord());
         holder.pronunciationTextView.setText(word.getPronunciation());
         holder.definitionTextView.setText(buildDefinitions(word.getShortDefs()));
+
+        holder.audioBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MediaPlayer mp = new MediaPlayer();
+                if(!isPlaying){
+                    isPlaying = true;
+                    try {
+                        mp.setDataSource(word.getAudio());
+                        mp.prepare();
+                        mp.start();
+                    } catch (IOException e) {
+                        Log.e("Err Tag", "prepare() failed");
+                    }
+                } else {
+                    isPlaying = false;
+                    mp.release();
+                    mp = null;
+                }
+            }
+        });
     }
 
     @Override
