@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ie.lit.ardictionary.R;
+import ie.lit.ardictionary.adapter.BulletAdapter;
 import ie.lit.ardictionary.adapter.WordAdapter;
 import ie.lit.ardictionary.model.Word;
 import ie.lit.ardictionary.ui.camera.CameraViewModel;
@@ -30,8 +31,9 @@ public class SearchResultFragment extends Fragment {
 
     private CameraViewModel cameraResultViewModel;
     private TextView wordTextView, definitionTextView, pronunciationTextView;
-    private RecyclerView wordRecyclerView;
+    private RecyclerView wordRecyclerView, bulletRecyclerView;
     private WordAdapter wordAdapter;
+    private BulletAdapter bulletAdapter;
     private List<Word> words;
     private View root;
     private Context context;
@@ -64,9 +66,6 @@ public class SearchResultFragment extends Fragment {
                 wordRecyclerView.setLayoutManager(mLayoutManager);
                 wordRecyclerView.setItemAnimator(new DefaultItemAnimator());
                 wordRecyclerView.setAdapter(wordAdapter);
-
-                //words.add(word);
-                //wordAdapter.notifyDataSetChanged();
             }
         };
 
