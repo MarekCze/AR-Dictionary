@@ -3,6 +3,7 @@ package ie.lit.ardictionary;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
