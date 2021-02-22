@@ -22,16 +22,11 @@ public class AuthFragment extends Fragment {
     Button googleBtn, fbBtn, emailBtn, anonBtn;
     View root;
 
-    public AuthFragment(FirebaseFirestore db, FirebaseAuth mAuth){
-        this.db = db;
-        this.mAuth = mAuth;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //return super.onCreateView(inflater, container, savedInstanceState);
-        root = inflater.inflate(R.layout.fragment_search_result, container, false);
+        root = inflater.inflate(R.layout.fragment_authentication, container, false);
 
         return root;
     }

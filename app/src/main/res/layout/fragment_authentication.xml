@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/logoImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.widget.Button
+        android:id="@+id/sign_in_button_email"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/sign_in_button_height"
+        android:layout_marginStart="@dimen/sign_in_button_margin"
+        android:layout_marginTop="@dimen/sign_in_button_margin_top"
+        android:layout_marginEnd="@dimen/sign_in_button_margin"
+        android:background="@drawable/email_button"
+        android:drawableLeft="@drawable/ic_baseline_mail_outline_24"
+        android:paddingLeft="@dimen/sign_in_button_icon_padding"
+        android:text="Sign In With Email"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoImg" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button_google"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/sign_in_button_margin"
+        android:layout_marginTop="@dimen/sign_in_button_margin_top"
+        android:layout_marginEnd="@dimen/sign_in_button_margin"
+        app:buttonSize="wide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_button_email">
+
+    </com.google.android.gms.common.SignInButton>
+
+    <android.widget.Button
+        android:id="@+id/sign_in_button_facebook"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/sign_in_button_height"
+        android:layout_marginStart="@dimen/sign_in_button_margin"
+        android:layout_marginTop="@dimen/sign_in_button_margin_top"
+        android:layout_marginEnd="@dimen/sign_in_button_margin"
+        android:background="@drawable/facebook_button"
+        android:drawableLeft="@drawable/ic_baseline_facebook_24"
+        android:text="Sign In With Facebook"
+        android:paddingLeft="@dimen/sign_in_button_icon_padding"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_button_google" />
+
+    <android.widget.Button
+        android:id="@+id/sign_in_button_anonymous"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/sign_in_button_height"
+        android:layout_marginStart="@dimen/sign_in_button_margin"
+        android:layout_marginTop="@dimen/sign_in_button_margin_top"
+        android:layout_marginEnd="@dimen/sign_in_button_margin"
+        android:background="@drawable/anonymous_button"
+        android:text="Continue as guest"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_button_facebook" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
