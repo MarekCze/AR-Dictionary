@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "158250828075",
+    "project_id": "ar-dictionary-bce63",
+    "storage_bucket": "ar-dictionary-bce63.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158250828075:android:2c1e06418cd4eaa7ee856e",
+        "android_client_info": {
+          "package_name": "ie.lit.ardictionary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "158250828075-p6sl2eiouku3437njo1g5kgiesvhpv3i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtlYGFbwLGXTfmyJAece0IPD8EVFoBTRM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "158250828075-p6sl2eiouku3437njo1g5kgiesvhpv3i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

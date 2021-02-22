@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
     //id 'com.google.gms.google-services'
 }
 
@@ -34,6 +35,8 @@ dependencies {
     implementation "com.google.android.gms:play-services-mlkit-text-recognition:16.1.2"
     // InputImage
     implementation "com.google.android.gms:play-services-mlkit-image-labeling:16.0.1"
+    implementation 'com.google.firebase:firebase-firestore:22.0.1'
+    implementation 'com.google.firebase:firebase-auth:20.0.1'
     // CameraX core library using the camera2 implementation
     def camerax_version = "1.0.0-rc01"
     // CameraX Core library
@@ -51,7 +54,14 @@ dependencies {
     // Logging interceptor for Retrofit response objects
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
 
-    // support library
+    // Firebase
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:26.5.0')
+    // Declare the dependency for the Firebase Authentication library
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
+    implementation 'com.facebook.android:facebook-android-sdk:4.41.0'
+
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
