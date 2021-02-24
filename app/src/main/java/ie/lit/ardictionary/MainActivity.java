@@ -14,13 +14,17 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import ie.lit.ardictionary.model.User;
+import ie.lit.ardictionary.ui.auth.AuthFragment;
 import ie.lit.ardictionary.ui.camera.CameraViewModel;
 
 import com.firebase.ui.auth.AuthUI;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -74,6 +78,22 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
         }
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if(currentUser == null){
+            Fragment authFragment = new AuthFragment();
+            this.getSupportFragmentManager().beginTransaction()
+                    .add(R.id.frameLayout, authFragment, "Auth Fragment")
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
     @Override

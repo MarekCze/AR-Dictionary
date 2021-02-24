@@ -14,4 +14,8 @@
     <dimen name="sign_in_button_margin">64dp</dimen>
     <dimen name="sign_in_button_margin_top">24dp</dimen>
     <dimen name="sign_in_button_icon_padding">16dp</dimen>
+    <dimen name="register_form_logo_margin_top">200dp</dimen>
+    <dimen name="register_form_logo_margin">64dp</dimen>
+    <dimen name="register_form_logo_size">200dp</dimen>
+
 </resources>

@@ -117,7 +117,7 @@ public class CameraFragment extends Fragment {
                             cameraViewModel.setWordDefinition(word);
                             Fragment newFragment = new SearchResultFragment();
                             getActivity().getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.frameLayout, newFragment, "findThisFragment")
+                                    .replace(R.id.frameLayout, newFragment, "Search Result Fragment")
                                     .addToBackStack(null)
                                     .commit();
                         }

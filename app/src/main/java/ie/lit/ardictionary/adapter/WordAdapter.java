@@ -2,7 +2,9 @@ package ie.lit.ardictionary.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -17,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -61,6 +64,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
         return new WordViewHolder(itemView);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public void onBindViewHolder(@NonNull WordViewHolder holder, int position) {
         final Word word = words.get(position);
@@ -95,21 +99,23 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
         return words.size();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     private SpannableStringBuilder buildDefinitions(List<String> definitions){
 
-        SpannableStringBuilder sb = new SpannableStringBuilder();
-        int charCount = 0;
-        for(String s : definitions){
+        SpannableStringBuilder ssb = new SpannableStringBuilder();
+
+        for(int i = 0; i < definitions.size(); i++){
+            String s = definitions.get(i);
+            if(i + 1 < definitions.size()){
+                s += "\n";
+            }
             CharSequence ch = s;
-            sb.append(s);
-            sb.setSpan(new BulletSpan(), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            sb.append("\n");
-            charCount += ch.length() + 1;
+            SpannableString ss = new SpannableString(s);
+            ss.setSpan(new BulletSpan(12, Color.parseColor("#000000"), 7), 0, ch.length(), 0);
+            ssb.append(ss);
         }
 
-        return sb;
+        return ssb;
     }
-
-
 
 }

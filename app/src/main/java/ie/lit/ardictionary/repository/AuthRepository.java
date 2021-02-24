@@ -79,12 +79,17 @@ public class AuthRepository {
     }
 
 
-    public void signInWithEmail(String email, String password){
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+    public void signInWithEmail(User user){
+        mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-
+                    Log.w("TAG", "signInWithEmail:success");
+                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                    createUser(firebaseUser, "email");
+                    firebaseUserMutableLiveData.postValue(firebaseUser);
+                } else {
+                    Log.w("TAG", "signInWithEmail:failure");
                 }
             }
         });

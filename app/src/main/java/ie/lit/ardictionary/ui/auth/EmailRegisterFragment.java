@@ -13,10 +13,10 @@ import androidx.fragment.app.Fragment;
 
 import ie.lit.ardictionary.R;
 
-public class EmailSignInFragment extends Fragment {
+public class EmailRegisterFragment extends Fragment {
 
-    private EditText emailEditText, passwordEditText;
-    private Button signInBtn;
+    private EditText emailEditText, nameEditText, passwordEditText, confirmPasswordEditText;
+    private Button createUserBtn;
     private View root;
 
     @Nullable
@@ -25,9 +25,11 @@ public class EmailSignInFragment extends Fragment {
 
         root = inflater.inflate(R.layout.fragment_email_register, container, false);
 
-        emailEditText = root.findViewById(R.id.emailEditTextSignInFragment);
-        passwordEditText = root.findViewById(R.id.passwordEditTextSignInFragment);
-        signInBtn = root.findViewById(R.id.signInBtn);
+        emailEditText = root.findViewById(R.id.emailEditTextRegisterFragment);
+        nameEditText = root.findViewById(R.id.nameEditTextRegisterFragment);
+        passwordEditText = root.findViewById(R.id.passwordEditTextRegisterFragment);
+        confirmPasswordEditText = root.findViewById(R.id.confirmPasswordEditTextRegisterFragment);
+        createUserBtn = root.findViewById(R.id.registerBtn);
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }

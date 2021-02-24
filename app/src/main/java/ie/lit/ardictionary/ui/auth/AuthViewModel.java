@@ -12,6 +12,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseUser;
 
+import ie.lit.ardictionary.model.User;
 import ie.lit.ardictionary.repository.AuthRepository;
 
 public class AuthViewModel extends AndroidViewModel {
@@ -23,7 +24,7 @@ public class AuthViewModel extends AndroidViewModel {
         super(application);
 
         authRepository = new AuthRepository(application);
-        userMutableLiveData = authRepository.getUserMutableLiveData();
+        userMutableLiveData = authRepository.getFirebaseUserMutableLiveData();
     }
 
     public void signInWithGoogle(Context context, GoogleSignInAccount account){
@@ -35,7 +36,8 @@ public class AuthViewModel extends AndroidViewModel {
     }
 
     public void signInWithEmail(String email, String password){
-        authRepository.signInWithEmail(email, password);
+        User user = new User(email, password);
+        authRepository.signInWithEmail(user);
     }
 
     public void signInAnonymously(Context context){
