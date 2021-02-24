@@ -1,14 +1,21 @@
 package ie.lit.ardictionary.model;
 
+import java.util.List;
+
 public class User {
     private String name;
     private String email;
     private String uid;
+    private String type;
+    private List<Notebook> notebooks;
 
-    public User(String name, String email, String uid){
+    public User(){}
+
+    public User(String name, String email, String uid, String type){
         this.name = name;
         this.email = email;
         this.uid = uid;
+        this.type = type;
     }
 
     public String getName() {
@@ -33,5 +40,13 @@ public class User {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
