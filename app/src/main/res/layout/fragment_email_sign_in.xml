@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white" >
 
     <ImageView
         android:id="@+id/logoImageSignInFragment"
@@ -18,36 +19,51 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logogreen" />
 
-    <EditText
-        android:id="@+id/emailEditTextSignInFragment"
+    <TextView
+        android:id="@+id/signInFragmentErrorTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:inputType="textEmailAddress"
+        android:textColor="@color/design_default_color_error"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logoImageSignInFragment" />
 
     <EditText
-        android:id="@+id/passwordEditTextSignInFragment"
-        android:layout_width="wrap_content"
+        android:id="@+id/emailEditTextSignInFragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:ems="10"
+        android:hint="@string/hint_email_exit_text"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signInFragmentErrorTextView" />
+
+    <EditText
+        android:id="@+id/passwordEditTextSignInFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:hint="@string/hint_password_exit_text"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailEditTextSignInFragment" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/signInBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/sign_in_button_height"
+        android:background="@drawable/email_button"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"

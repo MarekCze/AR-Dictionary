@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/emailRegisterConstraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
     <ImageView
         android:id="@+id/logoImageRegisterFragment"
@@ -17,28 +18,39 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logogreen" />
 
-    <EditText
-        android:id="@+id/nameEditTextRegisterFragment"
+    <TextView
+        android:id="@+id/registerFragmentErrorTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="@dimen/register_form_logo_margin"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
+        android:textColor="@color/design_default_color_error"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logoImageRegisterFragment" />
 
     <EditText
-        android:id="@+id/emailEditTextRegisterFragment"
-        android:layout_width="wrap_content"
+        android:id="@+id/nameEditTextRegisterFragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:ems="10"
+        android:hint="@string/hint_name_exit_text"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerFragmentErrorTextView" />
+
+    <EditText
+        android:id="@+id/emailEditTextRegisterFragment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:hint="@string/hint_email_exit_text"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,12 +58,12 @@
 
     <EditText
         android:id="@+id/passwordEditTextRegisterFragment"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:ems="10"
+        android:hint="@string/hint_password_exit_text"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,27 +71,43 @@
 
     <EditText
         android:id="@+id/confirmPasswordEditTextRegisterFragment"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:ems="10"
+        android:hint="@string/hint_confirm_password_exit_text"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditTextRegisterFragment" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/registerBtn"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/sign_in_button_height"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/email_button"
+        android:text="@string/btn_register"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordEditTextRegisterFragment" />
+
+    <TextView
+        android:id="@+id/loginTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
-        android:text="Button"
+        android:text="@string/text_have_an_account"
+        android:textColor="@color/blue_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordEditTextRegisterFragment" />
+        app:layout_constraintTop_toBottomOf="@+id/registerBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

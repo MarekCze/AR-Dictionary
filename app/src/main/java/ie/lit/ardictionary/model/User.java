@@ -8,6 +8,7 @@ public class User {
     private String uid;
     private String password;
     private String type;
+    private boolean isNewUser;
     private List<Notebook> notebooks;
 
     public User(){}
@@ -55,6 +56,14 @@ public class User {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isNewUser() {
+        return isNewUser;
+    }
+
+    public void setNewUser(boolean newUser) {
+        isNewUser = newUser;
     }
 
     public String getPassword() {

@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -57,16 +59,7 @@ public class AuthFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         context = getActivity();
 
-        authViewModel = ViewModelProviders.of(this).get(AuthViewModel.class);
-
-        authViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), new Observer<FirebaseUser>() {
-            @Override
-            public void onChanged(FirebaseUser firebaseUser) {
-                if(firebaseUser != null){
-                    // close fragment once user is logged in
-                }
-            }
-        });
+        authViewModel = new ViewModelProvider(getActivity()).get(AuthViewModel.class);
 
         return root;
     }
@@ -78,7 +71,12 @@ public class AuthFragment extends Fragment {
         emailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Fragment emailRegisterFragment = new EmailRegisterFragment();
+                String fragmentTag = "Email register fragment";
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frameLayout, emailRegisterFragment, fragmentTag)
+                        .addToBackStack(fragmentTag)
+                        .commit();
             }
         });
 

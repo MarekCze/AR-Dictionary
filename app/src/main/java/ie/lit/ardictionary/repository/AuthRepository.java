@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import ie.lit.ardictionary.model.User;
@@ -39,14 +41,6 @@ public class AuthRepository {
     private final static String TAG = "AUTHENTICATION";
     private final int RC_SIGN_IN = 1123;
 
-    public MutableLiveData<FirebaseUser> getFirebaseUserMutableLiveData() {
-        return firebaseUserMutableLiveData;
-    }
-
-    public void setFirebaseUserMutableLiveData(MutableLiveData<FirebaseUser> firebaseUserMutableLiveData) {
-        this.firebaseUserMutableLiveData = firebaseUserMutableLiveData;
-    }
-
     public AuthRepository(Application application){
         this.application = application;
 
@@ -57,6 +51,18 @@ public class AuthRepository {
         userMutableLiveData = new MutableLiveData<>();
     }
 
+    public MutableLiveData<FirebaseUser> getFirebaseUserMutableLiveData() {
+        return firebaseUserMutableLiveData;
+    }
+
+    public MutableLiveData<User> getUserMutableLiveData() {
+        return userMutableLiveData;
+    }
+
+    public void setFirebaseUserMutableLiveData(MutableLiveData<FirebaseUser> firebaseUserMutableLiveData) {
+        this.firebaseUserMutableLiveData = firebaseUserMutableLiveData;
+    }
+
     public void signInWithGoogle(Context context, GoogleSignInAccount account){
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -65,31 +71,48 @@ public class AuthRepository {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.w("TAG", "signInWithCredential:success");
+                            Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
                             createUser(firebaseUser, "google");
                             firebaseUserMutableLiveData.postValue(firebaseUser);
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w("TAG", "signInWithCredential:failure", task.getException());
+                            Log.d("TAG", "signInWithCredential:failure", task.getException());
                         }
                     }
                 });
     }
 
 
-    public void signInWithEmail(User user){
+    public void createUserWithEmailAndPassword(User user){
+        Log.w("TAG", "signInWithEmail:failure");
         mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Log.w("TAG", "signInWithEmail:success");
+                    Log.d(TAG, "signInWithEmail:success");
                     FirebaseUser firebaseUser = mAuth.getCurrentUser();
                     createUser(firebaseUser, "email");
                     firebaseUserMutableLiveData.postValue(firebaseUser);
                 } else {
-                    Log.w("TAG", "signInWithEmail:failure");
+                    Log.d(TAG, "signInWithEmail:failure");
+                }
+            }
+        });
+    }
+
+    public void signInWithEmailAndPassword(User user){
+        mAuth.signInWithEmailAndPassword(user.getEmail(), user.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    Log.d(TAG, "signInWithEmail:success");
+                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                    firebaseUserMutableLiveData.postValue(firebaseUser);
+                    getUser(firebaseUser);
+                } else {
+                    Log.d(TAG, "signInWithEmail:failure");
                 }
             }
         });
@@ -112,7 +135,7 @@ public class AuthRepository {
                             firebaseUserMutableLiveData.postValue(firebaseUser);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInAnonymously:failure", task.getException());
+                            Log.d(TAG, "signInAnonymously:failure", task.getException());
                             Toast.makeText(context, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -126,6 +149,7 @@ public class AuthRepository {
 
         user.setUid(firebaseUser.getUid());
         user.setType(type);
+        user.setNewUser(true);
         if(!type.equalsIgnoreCase("anonymous")){
             user.setName(firebaseUser.getDisplayName());
             user.setEmail(firebaseUser.getEmail());
@@ -133,5 +157,24 @@ public class AuthRepository {
 
         collection.document(user.getUid()).set(user);
 
+    }
+
+    private void getUser(FirebaseUser firebaseUser){
+        collection.document(firebaseUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+
+                    User user = doc.toObject(User.class);
+
+                    if(user.isNewUser()){
+                        user.setNewUser(false);
+                    }
+
+                    userMutableLiveData.postValue(user);
+                }
+            }
+        });
     }
 }

@@ -7,11 +7,20 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="synonym_heading">Similar Words</string>
-    <string name="example_sentences_heading">Example Sentences</string>
-    <string name="audio_btn_text">Audio</string>
+    <string name="heading_synonym">Similar Words</string>
+    <string name="heading_example_sentences">Example Sentences</string>
+    <string name="btn_audio">Audio</string>
 
     <string name="menu_camera">Home</string>
     <string name="menu_search_result">Word Definition</string>
     <string name="menu_authentication">Sign In</string>
+
+    <string name="btn_register">Register</string>
+    <string name="btn_sign_in">Sign In</string>
+    <string name="hint_email_exit_text">Email</string>
+    <string name="hint_name_exit_text">Name</string>
+    <string name="hint_password_exit_text">Password</string>
+    <string name="hint_confirm_password_exit_text">Confirm Password</string>
+
+    <string name="text_have_an_account">Already have an account? Sign in</string>
 </resources>

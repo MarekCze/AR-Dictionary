@@ -18,33 +18,45 @@ import ie.lit.ardictionary.repository.AuthRepository;
 public class AuthViewModel extends AndroidViewModel {
 
     private AuthRepository authRepository;
-    private MutableLiveData<FirebaseUser> userMutableLiveData;
+    private MutableLiveData<FirebaseUser> firebaseUserMutableLiveData;
+    private MutableLiveData<User> userMutableLiveData;
 
     public AuthViewModel(@NonNull Application application){
         super(application);
 
         authRepository = new AuthRepository(application);
-        userMutableLiveData = authRepository.getFirebaseUserMutableLiveData();
+        firebaseUserMutableLiveData = authRepository.getFirebaseUserMutableLiveData();
+        userMutableLiveData = authRepository.getUserMutableLiveData();
+    }
+
+    public MutableLiveData<FirebaseUser> getFirebaseUserMutableLiveData() {
+        return firebaseUserMutableLiveData;
+    }
+
+    public MutableLiveData<User> getUserMutableLiveData() {
+        return userMutableLiveData;
     }
 
     public void signInWithGoogle(Context context, GoogleSignInAccount account){
         authRepository.signInWithGoogle(context, account);
     }
 
-    public void setUserMutableLiveData(FirebaseUser user) {
-        userMutableLiveData.postValue(user);
+    public void setFirebaseUserMutableLiveData(FirebaseUser user) {
+        firebaseUserMutableLiveData.postValue(user);
     }
 
-    public void signInWithEmail(String email, String password){
+    public void createUserWithEmailAndPassword(String email, String password){
         User user = new User(email, password);
-        authRepository.signInWithEmail(user);
+        authRepository.createUserWithEmailAndPassword(user);
+    }
+
+    public void signInWithEmailAndPassword(String email, String password){
+        User user = new User(email, password);
+        authRepository.signInWithEmailAndPassword(user);
     }
 
     public void signInAnonymously(Context context){
         authRepository.signInAnonymously(context);
     }
 
-    public MutableLiveData<FirebaseUser> getUserMutableLiveData() {
-        return userMutableLiveData;
-    }
 }

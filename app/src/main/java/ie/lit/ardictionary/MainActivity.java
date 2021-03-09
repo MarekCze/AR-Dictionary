@@ -15,6 +15,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import ie.lit.ardictionary.model.User;
 import ie.lit.ardictionary.ui.auth.AuthFragment;
+import ie.lit.ardictionary.ui.auth.AuthViewModel;
+import ie.lit.ardictionary.ui.auth.EmailSignInFragment;
 import ie.lit.ardictionary.ui.camera.CameraViewModel;
 
 import com.firebase.ui.auth.AuthUI;
@@ -25,6 +27,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -44,10 +47,11 @@ public class MainActivity extends AppCompatActivity {
     public static final int RC_SIGN_IN = 1123;
     private AppBarConfiguration mAppBarConfiguration;
     private CameraViewModel homeViewModel;
+    private AuthViewModel authViewModel;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private User user;
-
+    private static final String TAG = "Main Activity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,9 +59,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // init Firebase
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
+        // init ViewModels
+        homeViewModel = new ViewModelProvider(this).get(CameraViewModel.class);
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+
+        // init navigation
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -70,13 +80,52 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        homeViewModel = new ViewModelProvider(this).get(CameraViewModel.class);
 
+        // check permissions
         if(allPermissionsGranted()){
             homeViewModel.setPermissionsGranted(true);
         } else {
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
         }
+
+        // observe authViewModel
+        authViewModel.getUserMutableLiveData().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+
+                FragmentManager fm = getSupportFragmentManager();
+
+                Toast text;
+                switch(user.getType()){
+                    case "email":
+                        if(!user.isNewUser()){
+                            Fragment signInFragment = fm.findFragmentByTag("Email sign in fragment");
+                            Fragment registerFragment = fm.findFragmentByTag("Email register fragment");
+                            fm.beginTransaction()
+                                    .remove(signInFragment)
+                                    .remove(registerFragment)
+                                    .commit();
+                            fm.popBackStack();
+                        } else {
+                            fm.popBackStackImmediate();
+                        }
+
+                        text = Toast.makeText(getApplicationContext(), "Signed in with email", Toast.LENGTH_SHORT);
+                        text.show();
+                        break;
+                    case "google":
+                        fm.popBackStackImmediate();
+                        text = Toast.makeText(getApplicationContext(), "Signed in with Google", Toast.LENGTH_SHORT);
+                        text.show();
+                        break;
+                    case "anonymous":
+                        fm.popBackStackImmediate();
+                        text = Toast.makeText(getApplicationContext(), "Signed in as guest", Toast.LENGTH_SHORT);
+                        text.show();
+                        break;
+                }
+            }
+        });
 
     }
 
