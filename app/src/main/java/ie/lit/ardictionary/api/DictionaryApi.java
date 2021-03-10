@@ -19,6 +19,7 @@ public class DictionaryApi {
     private static final String BASE_URL = "https://dictionaryapi.com/api/v3/references/sd3/json/";
     // key
     private String str = "{word}?key=0fb33c6f-c632-467c-8f72-1be2b685075b";
+    private String apiKey = "eaccd8cdb6b1812304e778a7f862d430";
     private static Retrofit retrofit = null;
     // build Retrofit client
     public static Retrofit getClient(){
