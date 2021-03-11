@@ -84,7 +84,7 @@
                 android:text="@string/heading_example_sentences" />
 
             <TextView
-                android:id="@+id/exampleSentencesTextView"
+                android:id="@+id/sentencesTextView"
                 style="@style/CardView.GreenTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
                 android:id="@+id/hrLineSynonyms"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@+id/exampleSentencesTextView"
+                android:layout_below="@+id/sentencesTextView"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="@dimen/word_card_heading_padding"
                 android:layout_marginEnd="@dimen/word_card_heading_padding"

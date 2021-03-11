@@ -37,7 +37,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
     private boolean isPlaying = false;
 
     public class WordViewHolder extends RecyclerView.ViewHolder {
-        public TextView wordTextView, pronunciationTextView, definitionTextView, synonymTextView;
+        public TextView wordTextView, pronunciationTextView, definitionTextView, synonymTextView, sentencesTextView;
         public ImageButton audioBtn;
 
         public WordViewHolder(View view) {
@@ -46,6 +46,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
             pronunciationTextView = (TextView) view.findViewById(R.id.pronunciationTextView);
             definitionTextView = (TextView) view.findViewById(R.id.definitionTextView);
             synonymTextView = (TextView) view.findViewById(R.id.synonymTextView);
+            sentencesTextView = (TextView) view.findViewById(R.id.sentencesTextView);
             audioBtn = (ImageButton) view.findViewById(R.id.audioBtn);
         }
     }
@@ -70,7 +71,9 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
         final Word word = words.get(position);
         holder.wordTextView.setText(word.getWord());
         holder.pronunciationTextView.setText(word.getPronunciation());
-        holder.definitionTextView.setText(buildDefinitions(word.getShortDefs()));
+        holder.definitionTextView.setText(buildBulletPointList(word.getDefinitions()));
+        holder.synonymTextView.setText(buildBulletPointList(word.getSynonyms()));
+        holder.sentencesTextView.setText(buildBulletPointList(word.getSentences()));
 
         holder.audioBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,13 +103,13 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
-    private SpannableStringBuilder buildDefinitions(List<String> definitions){
+    private SpannableStringBuilder buildBulletPointList(List<String> bulletPoints){
 
         SpannableStringBuilder ssb = new SpannableStringBuilder();
 
-        for(int i = 0; i < definitions.size(); i++){
-            String s = definitions.get(i);
-            if(i + 1 < definitions.size()){
+        for(int i = 0; i < bulletPoints.size(); i++){
+            String s = bulletPoints.get(i);
+            if(i + 1 < bulletPoints.size()){
                 s += "\n";
             }
             CharSequence ch = s;
