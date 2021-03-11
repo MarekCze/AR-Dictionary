@@ -135,6 +135,10 @@ public class CameraFragment extends Fragment {
         });
     }
 
+    private void getRootWord(){
+
+    }
+
     public void startCamera(){
         cameraProviderFuture = ProcessCameraProvider.getInstance(context);
 

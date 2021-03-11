@@ -22,7 +22,6 @@ import java.util.concurrent.Executors;
 public class TextRecognitionHandler {
 
     public String recognisedWord;
-    private static ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public TextRecognitionHandler(){}
 
