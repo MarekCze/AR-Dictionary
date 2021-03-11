@@ -26,16 +26,13 @@ public class DictionaryApi {
     private static final String API_KEY = "ae363e9c82a1e76ae04efedd3016df96";
     private static final String APP_ID = "8a95da47";
     private static final String LANGUAGE = "en";
-    private String endpoint = "";
 
     private static Retrofit retrofit = null;
 
     // build Retrofit client
-    public static Retrofit getClient(){
+    public static Retrofit getClient(Gson gson){
         // build okHttpClient
         OkHttpClient okHttpClient = buildClient();
-        // build Gson
-        Gson gson = initGson();
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -44,14 +41,6 @@ public class DictionaryApi {
                 .build();
 
         return retrofit;
-    }
-    // build custom GSON instance
-    private static Gson initGson(){
-        Type type = new TypeToken<Word>(){}.getType();
-        GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapter(type, new WordDeserializer());
-        Gson gson = gsonBuilder.create();
-
-        return gson;
     }
 
     private static OkHttpClient buildClient(){

@@ -9,6 +9,9 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface DictionaryApiInterface {
-    @GET("{word}")
-    Call<Word> getWord(@Path("word") String word, @Query("key") String key);
+    @GET("entries/en/{word}")
+    Call<Word> getWordDefinition(@Path("word") String word);
+
+    @GET("lemmas/en/{word}")
+    Call<String> getRootWord(@Path("word") String word);
 }
