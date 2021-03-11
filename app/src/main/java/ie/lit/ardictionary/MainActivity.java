@@ -18,6 +18,7 @@ import ie.lit.ardictionary.ui.auth.AuthFragment;
 import ie.lit.ardictionary.ui.auth.AuthViewModel;
 import ie.lit.ardictionary.ui.auth.EmailSignInFragment;
 import ie.lit.ardictionary.ui.camera.CameraViewModel;
+import ie.lit.ardictionary.ui.word.WordViewModel;
 
 import com.firebase.ui.auth.AuthUI;
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_PERMISSIONS = 1001;
     public static final int RC_SIGN_IN = 1123;
     private AppBarConfiguration mAppBarConfiguration;
-    private CameraViewModel homeViewModel;
+    public WordViewModel wordViewModel;
     private AuthViewModel authViewModel;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         // init ViewModels
-        homeViewModel = new ViewModelProvider(this).get(CameraViewModel.class);
+        wordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
         // init navigation
@@ -80,11 +81,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
         // check permissions
-        if(allPermissionsGranted()){
-            homeViewModel.setPermissionsGranted(true);
-        } else {
+        if(!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
         }
 
@@ -142,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.frameLayout, authFragment, "Auth Fragment")
                     .addToBackStack(null)
                     .commit();
+        } else {
+            wordViewModel.setUser(currentUser);
         }
     }
 
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode == REQUEST_CODE_PERMISSIONS){
             if(allPermissionsGranted()){
-                homeViewModel.setPermissionsGranted(true);
+                Log.d(TAG, "all permissions granted");
             } else {
                 Toast.makeText(this, "Permissions denied", Toast.LENGTH_SHORT).show();
             }
