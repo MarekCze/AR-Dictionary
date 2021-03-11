@@ -7,22 +7,20 @@ public class Word {
     private String id;
     private String word;
     private List<String> definitions;
-    private List<String> shortDefs;
     private String pronunciation;
     private String audio;
-    private boolean isOffensive;
+    private List<String> sentences;
+    private List<String> synonyms;
     private GregorianCalendar date;
-    private List<Word> homographs;
 
     public Word(){
         this.date = new GregorianCalendar();
     }
 
-    public Word(String id, String word, List<String> definitions, boolean isOffensive){
+    public Word(String id, String word, List<String> definitions){
         this.id = id;
         this.word = word;
         this.definitions = definitions;
-        this.isOffensive = isOffensive;
         this.date = new GregorianCalendar();
     }
 
@@ -40,14 +38,6 @@ public class Word {
 
     public void setWord(String word) {
         this.word = word;
-    }
-
-    public List<String> getShortDefs() {
-        return shortDefs;
-    }
-
-    public void setShortDefs(List<String> shortDefs) {
-        this.shortDefs = shortDefs;
     }
 
     public List<String> getDefinitions() {
@@ -74,19 +64,19 @@ public class Word {
         this.audio = audio;
     }
 
-    public boolean isOffensive() {
-        return isOffensive;
+    public List<String> getSentences() {
+        return sentences;
     }
 
-    public void setOffensive(boolean offensive) {
-        isOffensive = offensive;
+    public void setSentences(List<String> sentences) {
+        this.sentences = sentences;
     }
 
-    public List<Word> getHomographs() {
-        return homographs;
+    public List<String> getSynonyms() {
+        return synonyms;
     }
 
-    public void setHomographs(List<Word> homographs) {
-        this.homographs = homographs;
+    public void setSynonyms(List<String> synonyms) {
+        this.synonyms = synonyms;
     }
 }
