@@ -156,7 +156,7 @@ public class AuthRepository {
         }
 
         collection.document(user.getUid()).set(user);
-
+        userMutableLiveData.postValue(user);
     }
 
     private void getUser(FirebaseUser firebaseUser){
