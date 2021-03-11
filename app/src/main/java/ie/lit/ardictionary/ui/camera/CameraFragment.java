@@ -27,11 +27,14 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
 
+import ie.lit.ardictionary.MainActivity;
 import ie.lit.ardictionary.R;
 import ie.lit.ardictionary.api.DictionaryApi;
 import ie.lit.ardictionary.api.DictionaryApiInterface;
 import ie.lit.ardictionary.model.Word;
 import ie.lit.ardictionary.ui.gallery.SearchResultFragment;
+import ie.lit.ardictionary.ui.word.WordFragment;
+import ie.lit.ardictionary.ui.word.WordViewModel;
 import ie.lit.ardictionary.utils.TextRecognitionHandler;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,30 +48,19 @@ import java.util.concurrent.Executors;
 
 public class CameraFragment extends Fragment {
 
-    private CameraViewModel cameraViewModel;
+    private WordViewModel wordViewModel;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
-    private Camera camera;
     private PreviewView previewView;
     private Context context;
-    private Executor cameraExecutor = Executors.newSingleThreadExecutor();
-    DictionaryApiInterface dictionaryApiInterface;
     private View root;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_camera, container, false);
-        // init CameraVieModel
-        cameraViewModel = new ViewModelProvider(getActivity()).get(CameraViewModel.class);
+        // init WordVieModel
+        wordViewModel = new ViewModelProvider(getActivity()).get(WordViewModel.class);
         // init dictionary API
-        dictionaryApiInterface = DictionaryApi.getClient().create(DictionaryApiInterface.class);
         context = getActivity();
-
-        cameraViewModel.isPermissionsGranted().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                    startCamera();
-            }
-        });
 
         return root;
     }
@@ -78,6 +70,8 @@ public class CameraFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         previewView = root.findViewById(R.id.previewView);
+        startCamera();
+
         previewView.setOnTouchListener(new View.OnTouchListener() {
             // create bitmap and send to text recognizer on touch
             @Override
@@ -87,56 +81,25 @@ public class CameraFragment extends Fragment {
                     int x = (int) event.getX();
                     int y = (int) event.getY();
 
-                    TextRecognitionHandler recognizer = new TextRecognitionHandler();
-                    recognizer.runTextRecognition(screenshot, x, y, cameraViewModel);
+                    wordViewModel.getWordDefinition(screenshot, x, y);
 
                     Log.w("Touch Event", x + "," + y);
                 }
-
                 return true;
             }
         });
 
-        if(cameraViewModel.isPermissionsGranted().getValue()){
-            startCamera();
-        }
         // observe if a new word is set in ViewModel
-        cameraViewModel.getWord().observe(getViewLifecycleOwner(), new Observer<String>() {
-            // if word has changed, call API and wait for response
+        wordViewModel.getWordMutableLiveData().observe(getViewLifecycleOwner(), new Observer<Word>() {
             @Override
-            public void onChanged(String text) {
-                Log.w("word changed", text);
-                Call<Word> words = dictionaryApiInterface.getWord(text, "0fb33c6f-c632-467c-8f72-1be2b685075b");
-
-                words.enqueue(new Callback<Word>() {
-                    // on response from API, get response body and send to SearchResultFragment
-                    @Override
-                    public void onResponse(Call<Word> call, Response<Word> response) {
-                        if(response.isSuccessful()){
-                            Word word = response.body();
-                            cameraViewModel.setWordDefinition(word);
-                            Fragment newFragment = new SearchResultFragment();
-                            getActivity().getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.frameLayout, newFragment, "Search Result Fragment")
-                                    .addToBackStack(null)
-                                    .commit();
-                        }
-                        //Log.w("WORD TAG", wordList.get(0).getId());
-                    }
-
-                    @Override
-                    public void onFailure(Call<Word> call, Throwable t) {
-                        Log.w("TAG", "Inside OnFailure");
-                        Log.w("ERR", t.getMessage());
-                        call.cancel();
-                    }
-                });
+            public void onChanged(Word word) {
+                Fragment newFragment = new WordFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frameLayout, newFragment, "Search Result Fragment")
+                        .addToBackStack(null)
+                        .commit();
             }
         });
-    }
-
-    private void getRootWord(){
-
     }
 
     public void startCamera(){
@@ -170,21 +133,6 @@ public class CameraFragment extends Fragment {
 
         preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
-        /*ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
-                .setTargetResolution(new Size(previewView.getWidth(), previewView.getHeight()))
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .build();*/
-
-        /*imageAnalysis.setAnalyzer(analysisExecutor, new ImageAnalysis.Analyzer() {
-            @Override
-            public void analyze(@NonNull ImageProxy image) {
-                runTextRecognition(image);
-            } // END analyze
-        }); // END setAnalyzer*/
-
         cameraProvider.bindToLifecycle((LifecycleOwner) context, cameraSelector, preview);
     } // END bindPreview method
-
-
-
 }
