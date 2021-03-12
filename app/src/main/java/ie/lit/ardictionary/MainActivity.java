@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private User user;
     private static final String TAG = "Main Activity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         // init Firebase
         db = FirebaseFirestore.getInstance();
+
         mAuth = FirebaseAuth.getInstance();
 
         // init ViewModels
@@ -134,14 +136,15 @@ public class MainActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
+        // pass db instance to WordViewModel
+
+
         if(currentUser == null){
             Fragment authFragment = new AuthFragment();
             this.getSupportFragmentManager().beginTransaction()
                     .add(R.id.frameLayout, authFragment, "Auth Fragment")
                     .addToBackStack(null)
                     .commit();
-        } else {
-            wordViewModel.setUser(currentUser);
         }
     }
 

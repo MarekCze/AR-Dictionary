@@ -1,22 +1,37 @@
 package ie.lit.ardictionary.model;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 public class Notebook {
     private String name;
     private String uid;
-    private GregorianCalendar date;
+    private String date;
+    private DayOfWeek dayOfWeek;
     private List<Word> words;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Notebook(){
-        this.date = new GregorianCalendar();
+        LocalDate localDate = LocalDate.now();
+        this.dayOfWeek = localDate.getDayOfWeek();
+        this.date = localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Notebook(String name, String uid, List<Word> words){
         this.name = name;
         this.uid = uid;
         this.words = words;
+        LocalDate localDate = LocalDate.now();
+        this.dayOfWeek = localDate.getDayOfWeek();
+        this.date = localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
     }
 
     public String getName() {
@@ -35,12 +50,8 @@ public class Notebook {
         this.uid = uid;
     }
 
-    public GregorianCalendar getDate() {
+    public String getDate() {
         return date;
-    }
-
-    public void setDate(GregorianCalendar date) {
-        this.date = date;
     }
 
     public List<Word> getWords() {
@@ -49,5 +60,9 @@ public class Notebook {
 
     public void setWords(List<Word> words) {
         this.words = words;
+    }
+
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
     }
 }

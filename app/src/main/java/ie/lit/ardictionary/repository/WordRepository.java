@@ -4,17 +4,21 @@ import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,6 +32,7 @@ import java.lang.reflect.Type;
 
 import ie.lit.ardictionary.api.DictionaryApi;
 import ie.lit.ardictionary.api.DictionaryApiInterface;
+import ie.lit.ardictionary.model.Notebook;
 import ie.lit.ardictionary.model.Word;
 import ie.lit.ardictionary.utils.RootWordDeserializer;
 import ie.lit.ardictionary.utils.WordDeserializer;
@@ -38,7 +43,7 @@ import retrofit2.Response;
 public class WordRepository {
     private Application application;
     private FirebaseFirestore db;
-    private CollectionReference collection;
+    private CollectionReference notebookCollectionRef;
     private FirebaseUser user;
     private DictionaryApiInterface dictionaryApiInterface;
     private final static String TAG = "Word Repository";
@@ -48,6 +53,9 @@ public class WordRepository {
     public WordRepository(Application application){
         this.application = application;
 
+        db = FirebaseFirestore.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        Log.w(TAG, user.getUid());
         wordMutableLiveData = new MutableLiveData();
     }
 
@@ -55,33 +63,39 @@ public class WordRepository {
         return db;
     }
 
-    public void setDb(FirebaseFirestore db) {
-        this.db = db;
+    public CollectionReference getNotebookCollectionRef() {
+        return notebookCollectionRef;
     }
 
-    public CollectionReference getCollection() {
-        return collection;
-    }
-
-    public void setCollection(CollectionReference collection) {
-        this.collection = collection;
+    public void setNotebookCollectionRef(CollectionReference notebook) {
+        this.notebookCollectionRef = notebookCollectionRef;
     }
 
     public FirebaseUser getUser() {
         return user;
     }
 
-    public void setUser(FirebaseUser user) {
-        this.user = user;
-    }
-
     public MutableLiveData<Word> getWordMutableLiveData() {
         return wordMutableLiveData;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void saveWord(Word word){
-        collection = db.collection(user.getUid() + "/notebook/Words");
-        collection.document(word.getId()).set(word);
+        String notebookName = word.getDate();
+        Notebook notebook = new Notebook();
+        notebook.setName(notebook.getDayOfWeek().toString());
+        notebook.setUid(notebook.getDate());
+
+        notebookCollectionRef = db.collection("Users/" + user.getUid() + "/Notebooks");
+
+
+        notebookCollectionRef.document(notebook.getUid()).set(notebook).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                CollectionReference wordRef = notebookCollectionRef.document(notebook.getUid()).collection("Words");
+                wordRef.add(word);
+            }
+        });
     }
 
     public void getWordDefinition(Bitmap screenshot, int x, int y){
@@ -106,7 +120,9 @@ public class WordRepository {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+
                 Log.w(TAG, e.getMessage());
+                e.printStackTrace();
             }
         });
     }
@@ -135,6 +151,7 @@ public class WordRepository {
             public void onFailure(Call<String> call, Throwable t) {
                 Log.w(TAG, "Root word callback failed");
                 Log.w(TAG, t.getMessage());
+                t.printStackTrace();
                 call.cancel();
             }
         };
@@ -142,11 +159,14 @@ public class WordRepository {
 
     private Callback<Word> getWordDefinitionCallback(){
         return new Callback<Word>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call<Word> call, Response<Word> response) {
                 if(response.isSuccessful()){
                     Word word = response.body();
+                    Log.w(TAG, word.getDate());
                     wordMutableLiveData.postValue(word);
+                    saveWord(word);
                 }
             }
 
@@ -154,6 +174,7 @@ public class WordRepository {
             public void onFailure(Call<Word> call, Throwable t) {
                 Log.w(TAG, "Word definition callback failed");
                 Log.w(TAG, t.getMessage());
+                t.printStackTrace();
                 call.cancel();
             }
         };

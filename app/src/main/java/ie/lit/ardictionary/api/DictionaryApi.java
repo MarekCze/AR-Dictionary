@@ -26,7 +26,6 @@ public class DictionaryApi {
     private static final String API_KEY = "ae363e9c82a1e76ae04efedd3016df96";
     private static final String APP_ID = "8a95da47";
 
-
     private static Retrofit retrofit = null;
 
     // build Retrofit client

@@ -1,8 +1,13 @@
 package ie.lit.ardictionary.model;
 
+import android.os.Build;
 import android.util.Log;
 
-import java.util.GregorianCalendar;
+import androidx.annotation.RequiresApi;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Word {
@@ -13,17 +18,27 @@ public class Word {
     private String audio;
     private List<String> sentences;
     private List<String> synonyms;
-    private GregorianCalendar date;
+    private String date;
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Word(){
-        this.date = new GregorianCalendar();
+        LocalDate localDate = LocalDate.now();
+        this.date = localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Word(String id, String word, List<String> definitions){
         this.id = id;
         this.word = word;
         this.definitions = definitions;
-        this.date = new GregorianCalendar();
+        LocalDate localDate = LocalDate.now();
+        this.date = localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public String getId() {
