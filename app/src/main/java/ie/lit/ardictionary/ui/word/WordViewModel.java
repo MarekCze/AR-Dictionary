@@ -22,6 +22,7 @@ public class WordViewModel extends AndroidViewModel {
 
         wordRepository = new WordRepository(application);
         wordMutableLiveData = wordRepository.getWordMutableLiveData();
+        user = wordRepository.getUser();
     }
 
     public MutableLiveData<Word> getWordMutableLiveData() {

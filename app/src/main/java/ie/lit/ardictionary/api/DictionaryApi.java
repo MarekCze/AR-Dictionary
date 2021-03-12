@@ -54,7 +54,7 @@ public class DictionaryApi {
             @Override
             public Response intercept(@NotNull Chain chain) throws IOException {
                 Request request = chain.request().newBuilder()
-                        .addHeader("api_key", API_KEY)
+                        .addHeader("app_key", API_KEY)
                         .addHeader("app_id", APP_ID)
                         .build();
 

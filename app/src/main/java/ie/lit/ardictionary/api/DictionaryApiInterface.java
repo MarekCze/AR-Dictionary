@@ -12,6 +12,6 @@ public interface DictionaryApiInterface {
     @GET("entries/en/{word}")
     Call<Word> getWordDefinition(@Path("word") String word);
 
-    @GET("lemmas/en/{word}")
-    Call<String> getRootWord(@Path("word") String word);
+    @GET("lemmas/en/{rootWord}")
+    Call<String> getRootWord(@Path("rootWord") String rootWord);
 }

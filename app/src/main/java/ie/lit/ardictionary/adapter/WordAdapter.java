@@ -107,17 +107,20 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
 
         SpannableStringBuilder ssb = new SpannableStringBuilder();
 
-        for(int i = 0; i < bulletPoints.size(); i++){
-            String s = bulletPoints.get(i);
-            if(i + 1 < bulletPoints.size()){
-                s += "\n";
+        if(bulletPoints != null){
+            for(int i = 0; i < bulletPoints.size(); i++){
+                String s = bulletPoints.get(i);
+                if(i + 1 < bulletPoints.size()){
+                    s += "\n";
+                }
+                CharSequence ch = s;
+                SpannableString ss = new SpannableString(s);
+                ss.setSpan(new BulletSpan(12, Color.parseColor("#000000"), 7), 0, ch.length(), 0);
+                ssb.append(ss);
             }
-            CharSequence ch = s;
-            SpannableString ss = new SpannableString(s);
-            ss.setSpan(new BulletSpan(12, Color.parseColor("#000000"), 7), 0, ch.length(), 0);
-            ssb.append(ss);
+        } else {
+            ssb.append("");
         }
-
         return ssb;
     }
 

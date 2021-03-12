@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
@@ -36,9 +37,9 @@ import retrofit2.Response;
 
 public class WordRepository {
     private Application application;
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private CollectionReference collection;
+    private FirebaseUser user;
     private DictionaryApiInterface dictionaryApiInterface;
     private final static String TAG = "Word Repository";
 
@@ -47,15 +48,40 @@ public class WordRepository {
     public WordRepository(Application application){
         this.application = application;
 
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        collection = db.collection("Words");
         wordMutableLiveData = new MutableLiveData();
+    }
 
+    public FirebaseFirestore getDb() {
+        return db;
+    }
+
+    public void setDb(FirebaseFirestore db) {
+        this.db = db;
+    }
+
+    public CollectionReference getCollection() {
+        return collection;
+    }
+
+    public void setCollection(CollectionReference collection) {
+        this.collection = collection;
+    }
+
+    public FirebaseUser getUser() {
+        return user;
+    }
+
+    public void setUser(FirebaseUser user) {
+        this.user = user;
     }
 
     public MutableLiveData<Word> getWordMutableLiveData() {
         return wordMutableLiveData;
+    }
+
+    public void saveWord(Word word){
+        collection = db.collection(user.getUid() + "/notebook/Words");
+        collection.document(word.getId()).set(word);
     }
 
     public void getWordDefinition(Bitmap screenshot, int x, int y){
