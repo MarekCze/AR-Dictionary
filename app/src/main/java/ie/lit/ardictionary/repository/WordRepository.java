@@ -106,7 +106,7 @@ public class WordRepository {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
+                Log.w(TAG, e.getMessage());
             }
         });
     }

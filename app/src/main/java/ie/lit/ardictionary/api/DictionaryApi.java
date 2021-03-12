@@ -22,10 +22,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DictionaryApi {
     // API credentials
-    private static final String BASE_URL = "https://od-api.oxforddictionaries.com:443/api/v2/entries/en/";
+    private static final String BASE_URL = "https://od-api.oxforddictionaries.com:443/api/v2/";
     private static final String API_KEY = "ae363e9c82a1e76ae04efedd3016df96";
     private static final String APP_ID = "8a95da47";
-    private static final String LANGUAGE = "en";
+
 
     private static Retrofit retrofit = null;
 

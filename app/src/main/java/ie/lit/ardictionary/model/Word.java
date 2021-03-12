@@ -1,5 +1,7 @@
 package ie.lit.ardictionary.model;
 
+import android.util.Log;
+
 import java.util.GregorianCalendar;
 import java.util.List;
 
