@@ -30,14 +30,21 @@ public class WordFragment extends Fragment {
     private RecyclerView wordRecyclerView;
     private WordAdapter wordAdapter;
     private List<Word> words;
+    private String notebookId;
     private View root;
     private Context context;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         wordViewModel = new ViewModelProvider(getActivity()).get(WordViewModel.class);
-        root = inflater.inflate(R.layout.fragment_search_result, container, false);
+        root = inflater.inflate(R.layout.fragment_word, container, false);
         words = new ArrayList();
         context = getActivity();
+
+        if(!getArguments().isEmpty()){
+            Log.w("Word Fragment", "Inside if statement onCreateView");
+            notebookId = getArguments().getString("notebookId");
+            wordViewModel.getNotebookWords(notebookId);
+        }
 
         return root;
     }
@@ -53,20 +60,31 @@ public class WordFragment extends Fragment {
                 Log.w("TAG","audio: " + word.getAudio());
 
                 words.add(word);
-
-                wordRecyclerView = (RecyclerView) root.findViewById(R.id.word_list_recycler_view);
-                wordAdapter = new WordAdapter(context, words);
-
-                RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 1);
-                wordRecyclerView.setLayoutManager(mLayoutManager);
-                wordRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                wordRecyclerView.setAdapter(wordAdapter);
-
+                buildRecyclerView(words);
             }
         };
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
         wordViewModel.getWordMutableLiveData().observe(getViewLifecycleOwner(), wordDefinitionObserver);
 
+        final Observer<List<Word>> wordListObserver = new Observer<List<Word>>() {
+            @Override
+            public void onChanged(List<Word> words) {
+                Log.w("Word Fragment", "Inside onChanged");
+                buildRecyclerView(words);
+            }
+        };
+
+        wordViewModel.getWordListMutableLiveData().observe(getViewLifecycleOwner(), wordListObserver);
+    }
+
+    private void buildRecyclerView(List<Word> wordList){
+        wordRecyclerView = (RecyclerView) root.findViewById(R.id.word_list_recycler_view);
+        wordAdapter = new WordAdapter(context, wordList);
+
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 1);
+        wordRecyclerView.setLayoutManager(mLayoutManager);
+        wordRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        wordRecyclerView.setAdapter(wordAdapter);
     }
 }

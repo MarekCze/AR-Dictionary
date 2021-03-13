@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -29,6 +30,7 @@ import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 import ie.lit.ardictionary.api.DictionaryApi;
 import ie.lit.ardictionary.api.DictionaryApiInterface;
@@ -49,6 +51,7 @@ public class WordRepository {
     private final static String TAG = "Word Repository";
 
     private MutableLiveData<Word> wordMutableLiveData;
+    private MutableLiveData<List<Word>> wordListMutableLiveData;
 
     public WordRepository(Application application){
         this.application = application;
@@ -56,6 +59,7 @@ public class WordRepository {
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         wordMutableLiveData = new MutableLiveData();
+        wordListMutableLiveData = new MutableLiveData();
     }
 
     public FirebaseFirestore getDb() {
@@ -70,8 +74,25 @@ public class WordRepository {
         return user;
     }
 
+    public MutableLiveData<List<Word>> getWordListMutableLiveData() {
+        return wordListMutableLiveData;
+    }
+
     public MutableLiveData<Word> getWordMutableLiveData() {
         return wordMutableLiveData;
+    }
+
+    public void getNotebookWords(String notebookId){
+        CollectionReference wordCollectionRef = db.collection("Users/" + user.getUid() + "/Notebooks/" + notebookId + "/Words");
+        wordCollectionRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    List<Word> words = task.getResult().toObjects(Word.class);
+                    wordListMutableLiveData.postValue(words);
+                }
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

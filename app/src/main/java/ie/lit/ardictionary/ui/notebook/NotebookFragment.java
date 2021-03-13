@@ -56,7 +56,7 @@ public class NotebookFragment extends Fragment {
                 notebookRecyclerView = (RecyclerView) root.findViewById(R.id.notebook_list_recycler_view);
                 notebookAdapter = new NotebookAdapter(context, notebooks);
 
-                RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 1);
+                RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 2);
                 notebookRecyclerView.setLayoutManager(mLayoutManager);
                 notebookRecyclerView.setItemAnimator(new DefaultItemAnimator());
                 notebookRecyclerView.setAdapter(notebookAdapter);
