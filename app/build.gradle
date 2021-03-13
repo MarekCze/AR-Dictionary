@@ -61,6 +61,8 @@ dependencies {
     // Declare the dependency for the Firebase Authentication library
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
+    // for firebase recycler adapter
+    implementation "com.firebaseui:firebase-ui-firestore:3.0.0"
     implementation 'com.facebook.android:facebook-android-sdk:4.41.0'
 
     implementation 'androidx.appcompat:appcompat:1.2.0'

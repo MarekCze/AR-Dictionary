@@ -55,7 +55,6 @@ public class WordRepository {
 
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        Log.w(TAG, user.getUid());
         wordMutableLiveData = new MutableLiveData();
     }
 
@@ -65,10 +64,6 @@ public class WordRepository {
 
     public CollectionReference getNotebookCollectionRef() {
         return notebookCollectionRef;
-    }
-
-    public void setNotebookCollectionRef(CollectionReference notebook) {
-        this.notebookCollectionRef = notebookCollectionRef;
     }
 
     public FirebaseUser getUser() {

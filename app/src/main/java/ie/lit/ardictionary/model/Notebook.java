@@ -14,7 +14,10 @@ public class Notebook {
     private String name;
     private String uid;
     private String date;
+    private LocalDate dateModified;
     private DayOfWeek dayOfWeek;
+    private String style;
+
     private List<Word> words;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -33,6 +36,23 @@ public class Notebook {
         this.dayOfWeek = localDate.getDayOfWeek();
         this.date = localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
     }
+
+    public LocalDate getDateModified() {
+        return dateModified;
+    }
+
+    public void setDateModified(LocalDate dateModified) {
+        this.dateModified = dateModified;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
 
     public String getName() {
         return name;

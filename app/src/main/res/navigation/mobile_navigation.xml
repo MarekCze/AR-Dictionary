@@ -20,4 +20,9 @@
         android:name="ie.lit.ardictionary.ui.auth.AuthFragment"
         android:label="@string/menu_authentication" />
 
+    <fragment
+        android:id="@+id/nav_notebooks"
+        android:name="ie.lit.ardictionary.ui.notebook.NotebookFragment"
+        android:label="@string/menu_notebooks" />
+
 </navigation>
