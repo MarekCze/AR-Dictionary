@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Gray shadow. -->
-    <item android:left="1dp" android:top="1dp">
+    <!-- Dark shadow. -->
+    <item android:right="3dp" android:top="3dp">
         <shape>
-            <solid android:color="@color/blue_dark" />
+            <solid android:color="@color/red_dark" />
             <corners android:radius="4dp" />
         </shape>
     </item>
-    <!-- White foreground. -->
-    <item android:bottom="3dp" android:right="2dp">
+    <!-- Light foreground. -->
+    <item android:bottom="3dp" android:left="4dp">
         <shape>
-            <solid android:color="@color/blue_light" />
+            <solid android:color="@color/red_light" />
             <corners android:radius="4dp" />
         </shape>
     </item>

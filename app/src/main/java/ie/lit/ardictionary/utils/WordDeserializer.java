@@ -1,6 +1,9 @@
 package ie.lit.ardictionary.utils;
 
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -19,6 +22,7 @@ import ie.lit.ardictionary.model.Word;
 
 public class WordDeserializer implements JsonDeserializer<Word> {
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public Word deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jo = json.getAsJsonObject();
@@ -67,13 +71,18 @@ public class WordDeserializer implements JsonDeserializer<Word> {
             // loop through synonyms array and set synonyms
             if(senses.has("synonyms")){
                 List<String> synonyms = new ArrayList();
-                for(JsonElement el : senses.get("synonyms").getAsJsonArray()){
-                    synonyms.add(el.getAsJsonObject().get("text").getAsString());
+                if(senses.get("synonyms").getAsJsonArray().size() > 5){
+                    for(int i = 0; i < 5; i++){
+                        synonyms.add(senses.get("synonyms").getAsJsonArray().get(i).getAsJsonObject().get("text").getAsString());
+                    }
+                } else {
+                    for(JsonElement el : senses.get("synonyms").getAsJsonArray()){
+                        synonyms.add(el.getAsJsonObject().get("text").getAsString());
+                    }
                 }
+
                 w.setSynonyms(synonyms);
             }
-
-
         } catch (JsonParseException e) {
             e.printStackTrace();
         }

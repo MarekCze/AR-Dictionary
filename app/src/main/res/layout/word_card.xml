@@ -31,6 +31,7 @@
             <TextView
                 android:id="@+id/pronunciationTextView"
                 style="@style/CardView.RegularFont"
+                android:textSize="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/wordTextView"
@@ -46,13 +47,14 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:background="@color/white"
-                android:layout_marginTop="@dimen/word_card_heading_padding"
-                android:layout_marginEnd="@dimen/word_card_heading_padding"
+                android:layout_marginTop="@dimen/word_card_audio_btn_padding"
+                android:layout_marginEnd="@dimen/word_card_audio_btn_padding"
                 android:src="@drawable/ic_audio_btn" />
 
             <TextView
                 android:id="@+id/definitionTextView"
                 style="@style/CardView.RegularFont"
+                android:textSize="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/pronunciationTextView"
@@ -74,7 +76,7 @@
                 android:background="@color/green_light" />
 
             <TextView
-                android:id="@+id/exampleSentencesHeading"
+                android:id="@+id/sentencesHeadingTextView"
                 style="@style/CardView.GreenTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -86,9 +88,10 @@
             <TextView
                 android:id="@+id/sentencesTextView"
                 style="@style/CardView.RegularFont"
+                android:textSize="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/exampleSentencesHeading"
+                android:layout_below="@+id/sentencesHeadingTextView"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="@dimen/word_card_heading_padding"
                 android:layout_marginTop="@dimen/word_card_heading_padding"
@@ -107,7 +110,7 @@
                 android:background="@color/green_light" />
 
             <TextView
-                android:id="@+id/synonymHeading"
+                android:id="@+id/synonymHeadingTextView"
                 style="@style/CardView.GreenTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -119,9 +122,10 @@
             <TextView
                 android:id="@+id/synonymTextView"
                 style="@style/CardView.RegularFont"
+                android:textSize="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/synonymHeading"
+                android:layout_below="@+id/synonymHeadingTextView"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="@dimen/word_card_heading_padding"
                 android:layout_marginTop="@dimen/word_card_heading_padding"

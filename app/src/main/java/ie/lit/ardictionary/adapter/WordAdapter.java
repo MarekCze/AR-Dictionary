@@ -3,6 +3,7 @@ package ie.lit.ardictionary.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.text.SpannableString;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -37,7 +40,8 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
     private boolean isPlaying = false;
 
     public class WordViewHolder extends RecyclerView.ViewHolder {
-        public TextView wordTextView, pronunciationTextView, definitionTextView, synonymTextView, sentencesTextView;
+        public TextView wordTextView, pronunciationTextView, definitionTextView, synonymTextView, sentencesTextView, sentencesHeadingTextView, synonymHeadingTextView;
+        public View hrLineExampleSentences, hrLineSynonyms;
         public ImageButton audioBtn;
 
         public WordViewHolder(View view) {
@@ -47,7 +51,11 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
             definitionTextView = (TextView) view.findViewById(R.id.definitionTextView);
             synonymTextView = (TextView) view.findViewById(R.id.synonymTextView);
             sentencesTextView = (TextView) view.findViewById(R.id.sentencesTextView);
+            sentencesHeadingTextView = (TextView) view.findViewById(R.id.sentencesHeadingTextView);
+            synonymHeadingTextView = (TextView) view.findViewById(R.id.synonymHeadingTextView);
             audioBtn = (ImageButton) view.findViewById(R.id.audioBtn);
+            hrLineExampleSentences = (View) view.findViewById(R.id.hrLineExampleSentences);
+            hrLineSynonyms = (View) view.findViewById(R.id.hrLineSynonyms);
         }
     }
 
@@ -74,6 +82,60 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
         holder.definitionTextView.setText(buildBulletPointList(word.getDefinitions()));
         holder.synonymTextView.setText(buildBulletPointList(word.getSynonyms()));
         holder.sentencesTextView.setText(buildBulletPointList(word.getSentences()));
+        Drawable drawableWrap = DrawableCompat.wrap(holder.audioBtn.getDrawable()).mutate();
+
+        switch(word.getStyle()){
+            case "green":
+                holder.wordTextView.setTextAppearance(context, R.style.CardView_GreenTheme);
+                holder.sentencesHeadingTextView.setTextAppearance(context, R.style.CardView_GreenTheme);
+                holder.synonymHeadingTextView.setTextAppearance(context, R.style.CardView_GreenTheme);
+                holder.hrLineExampleSentences.setBackgroundColor(ContextCompat.getColor(context, R.color.green_light));
+                holder.hrLineSynonyms.setBackgroundColor(ContextCompat.getColor(context, R.color.green_light));
+
+                DrawableCompat.setTint(drawableWrap, ContextCompat.getColor(context, R.color.green_dark));
+
+                break;
+            case "blue":
+                holder.wordTextView.setTextAppearance(context, R.style.CardView_BlueTheme);
+                holder.sentencesHeadingTextView.setTextAppearance(context, R.style.CardView_BlueTheme);
+                holder.synonymHeadingTextView.setTextAppearance(context, R.style.CardView_BlueTheme);
+                holder.hrLineExampleSentences.setBackgroundColor(ContextCompat.getColor(context, R.color.blue_light));
+                holder.hrLineSynonyms.setBackgroundColor(ContextCompat.getColor(context, R.color.blue_light));
+
+                DrawableCompat.setTint(drawableWrap, ContextCompat.getColor(context, R.color.blue_dark));
+
+                break;
+            case "red":
+                holder.wordTextView.setTextAppearance(context, R.style.CardView_RedTheme);
+                holder.sentencesHeadingTextView.setTextAppearance(context, R.style.CardView_RedTheme);
+                holder.synonymHeadingTextView.setTextAppearance(context, R.style.CardView_RedTheme);
+                holder.hrLineExampleSentences.setBackgroundColor(ContextCompat.getColor(context, R.color.red_light));
+                holder.hrLineSynonyms.setBackgroundColor(ContextCompat.getColor(context, R.color.red_light));
+
+                DrawableCompat.setTint(drawableWrap, ContextCompat.getColor(context, R.color.red_dark));
+
+                break;
+            case "purple":
+                holder.wordTextView.setTextAppearance(context, R.style.CardView_PurpleTheme);
+                holder.sentencesHeadingTextView.setTextAppearance(context, R.style.CardView_PurpleTheme);
+                holder.synonymHeadingTextView.setTextAppearance(context, R.style.CardView_PurpleTheme);
+                holder.hrLineExampleSentences.setBackgroundColor(ContextCompat.getColor(context, R.color.purple_light));
+                holder.hrLineSynonyms.setBackgroundColor(ContextCompat.getColor(context, R.color.purple_light));
+
+                DrawableCompat.setTint(drawableWrap, ContextCompat.getColor(context, R.color.purple_dark));
+
+                break;
+            case "yellow":
+                holder.wordTextView.setTextAppearance(context, R.style.CardView_YellowTheme);
+                holder.sentencesHeadingTextView.setTextAppearance(context, R.style.CardView_YellowTheme);
+                holder.synonymHeadingTextView.setTextAppearance(context, R.style.CardView_YellowTheme);
+                holder.hrLineExampleSentences.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow_light));
+                holder.hrLineSynonyms.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow_light));
+
+                DrawableCompat.setTint(drawableWrap, ContextCompat.getColor(context, R.color.yellow_dark));
+
+                break;
+        }
 
         holder.audioBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -102,6 +102,8 @@ public class WordRepository {
         notebook.setName(notebook.getDayOfWeek().toString());
         notebook.setUid(notebook.getDate());
 
+        word.setStyle(notebook.getStyle());
+
         notebookCollectionRef = db.collection("Users/" + user.getUid() + "/Notebooks");
 
 

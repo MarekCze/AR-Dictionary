@@ -40,7 +40,7 @@ public class WordFragment extends Fragment {
         words = new ArrayList();
         context = getActivity();
 
-        if(!getArguments().isEmpty()){
+        if(getArguments() != null){
             Log.w("Word Fragment", "Inside if statement onCreateView");
             notebookId = getArguments().getString("notebookId");
             wordViewModel.getNotebookWords(notebookId);

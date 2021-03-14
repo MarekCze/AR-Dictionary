@@ -19,6 +19,7 @@ public class Word {
     private List<String> sentences;
     private List<String> synonyms;
     private String date;
+    private String style;
     private List<Word> words;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -35,6 +36,14 @@ public class Word {
         LocalDate localDate = LocalDate.now();
         this.date = localDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
     }
 
     public List<Word> getWords() {

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,6 +60,33 @@ public class NotebookAdapter extends RecyclerView.Adapter<NotebookAdapter.Notebo
 
         holder.dateTextView.setText(notebook.getDate());
         holder.nameTextView.setText(notebook.getName());
+
+        CardView card = holder.itemView.findViewById(R.id.card_view_notebook);
+
+        switch(notebook.getStyle()){
+            case "green":
+                holder.itemView.setBackgroundResource(R.drawable.card_background_green);
+                card.setCardBackgroundColor(ContextCompat.getColor(context, R.color.green_light));
+                break;
+            case "blue":
+                holder.itemView.setBackgroundResource(R.drawable.card_background_blue);
+                card.setCardBackgroundColor(ContextCompat.getColor(context, R.color.blue_light));
+                break;
+            case "red":
+                holder.itemView.setBackgroundResource(R.drawable.card_background_red);
+                card.setCardBackgroundColor(ContextCompat.getColor(context, R.color.red_light));
+                break;
+            case "purple":
+                holder.itemView.setBackgroundResource(R.drawable.card_background_purple);
+                card.setCardBackgroundColor(ContextCompat.getColor(context, R.color.purple_light));
+                break;
+            case "yellow":
+                holder.itemView.setBackgroundResource(R.drawable.card_background_yellow);
+                card.setCardBackgroundColor(ContextCompat.getColor(context, R.color.yellow_light));
+                break;
+        }
+
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Random;
 
 public class Notebook {
     private String name;
@@ -25,6 +26,7 @@ public class Notebook {
         LocalDate localDate = LocalDate.now();
         this.dayOfWeek = localDate.getDayOfWeek();
         this.date = localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        this.style = setNotebookStyle();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -35,6 +37,7 @@ public class Notebook {
         LocalDate localDate = LocalDate.now();
         this.dayOfWeek = localDate.getDayOfWeek();
         this.date = localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        this.style = setNotebookStyle();
     }
 
     public LocalDate getDateModified() {
@@ -52,7 +55,6 @@ public class Notebook {
     public void setStyle(String style) {
         this.style = style;
     }
-
 
     public String getName() {
         return name;
@@ -84,5 +86,13 @@ public class Notebook {
 
     public DayOfWeek getDayOfWeek() {
         return dayOfWeek;
+    }
+
+    private String setNotebookStyle(){
+        String[] styles = {"green", "blue", "red", "purple", "yellow"};
+
+        int num = new Random().nextInt((4 - 0) + 1) + 0;
+
+        return styles[num];
     }
 }

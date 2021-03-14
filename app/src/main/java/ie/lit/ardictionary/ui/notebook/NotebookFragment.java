@@ -1,6 +1,7 @@
 package ie.lit.ardictionary.ui.notebook;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,9 +61,27 @@ public class NotebookFragment extends Fragment {
                 notebookRecyclerView.setLayoutManager(mLayoutManager);
                 notebookRecyclerView.setItemAnimator(new DefaultItemAnimator());
                 notebookRecyclerView.setAdapter(notebookAdapter);
+                notebookRecyclerView.addItemDecoration(new SpacingDecoration(16));
             }
         };
 
         notebookViewModel.getNotebookListMutableLiveData().observe(getViewLifecycleOwner(), notebookObserver);
+    }
+
+    private class SpacingDecoration extends RecyclerView.ItemDecoration {
+        private int spacing;
+
+        public SpacingDecoration(int spacing){
+            this.spacing = spacing;
+        }
+
+        @Override
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+
+            outRect.left = spacing;
+            outRect.right = spacing;
+            outRect.bottom = spacing;
+        }
     }
 }
