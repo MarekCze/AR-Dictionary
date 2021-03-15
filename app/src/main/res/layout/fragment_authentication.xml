@@ -44,10 +44,11 @@
         android:layout_marginTop="@dimen/sign_in_button_margin_top"
         android:layout_marginEnd="@dimen/sign_in_button_margin"
         android:background="@drawable/btn_background_white"
-        android:drawableLeft="@mipmap/btn_google"
+        android:drawableLeft="@drawable/btn_google_wrapper"
+        android:drawablePadding="10dp"
         android:text="Sign In With Google"
         android:textAllCaps="false"
-        android:textColor="@color/white"
+        android:textColor="@color/common_google_signin_btn_text_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_in_button_email" />

@@ -61,7 +61,7 @@
         android:id="@+id/signInBtn"
         android:layout_width="0dp"
         android:layout_height="@dimen/sign_in_button_height"
-        android:background="@drawable/card_background_green"
+        android:background="@drawable/btn_background_green"
         android:textColor="@color/white"
         android:textAllCaps="false"
         android:layout_marginStart="32dp"

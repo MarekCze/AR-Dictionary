@@ -90,14 +90,16 @@ public class AuthFragment extends Fragment {
             }
         });
 
-        anonBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                authViewModel.signInAnonymously(context);
-            }
-        });
-
-
+        if(authViewModel.getUserMutableLiveData().getValue() != null && authViewModel.getUserMutableLiveData().getValue().getType() == "anonymous"){
+            anonBtn.setVisibility(View.GONE);
+        } else {
+            anonBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    authViewModel.signInAnonymously(context);
+                }
+            });
+        }
     }
 
     private void signIn(GoogleSignInClient mGoogleSignInClient) {

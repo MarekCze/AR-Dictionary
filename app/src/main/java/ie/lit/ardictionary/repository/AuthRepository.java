@@ -68,21 +68,7 @@ public class AuthRepository {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
 
         if(mAuth.getCurrentUser() != null){
-            mAuth.getCurrentUser().linkWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "linkWithGoogleCredential:success");
-                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                        createUser(firebaseUser, "google");
-                        firebaseUserMutableLiveData.postValue(firebaseUser);
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.d("TAG", "linkWithGoogleCredential:failure", task.getException());
-                    } // END inner if else
-                } // END onComplete method
-            }); // END onCompleteListener
+            linkAnonymousAccount(credential);
         } else {
             mAuth.signInWithCredential(credential)
                     .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
@@ -94,7 +80,6 @@ public class AuthRepository {
                                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
                                 createUser(firebaseUser, "google");
                                 firebaseUserMutableLiveData.postValue(firebaseUser);
-
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.d("TAG", "signInWithCredential:failure", task.getException());
