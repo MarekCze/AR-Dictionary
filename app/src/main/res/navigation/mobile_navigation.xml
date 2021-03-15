@@ -11,18 +11,24 @@
         android:label="@string/menu_camera"
         tools:layout="@layout/fragment_camera" />
     <fragment
-        android:id="@+id/nav_search_result"
-        android:name="ie.lit.ardictionary.ui.gallery.SearchResultFragment"
-        android:label="@string/menu_search_result"
-        tools:layout="@layout/fragment_search_result" />
+        android:id="@+id/nav_notebooks"
+        android:name="ie.lit.ardictionary.ui.notebook.NotebookFragment"
+        android:label="@string/menu_notebooks"
+        tools:layout="@layout/fragment_notebook"/>
     <fragment
         android:id="@+id/nav_authentication"
         android:name="ie.lit.ardictionary.ui.auth.AuthFragment"
-        android:label="@string/menu_authentication" />
-
+        android:label="@string/menu_authentication"
+        tools:layout="@layout/fragment_authentication"/>
     <fragment
-        android:id="@+id/nav_notebooks"
-        android:name="ie.lit.ardictionary.ui.notebook.NotebookFragment"
-        android:label="@string/menu_notebooks" />
+        android:id="@+id/nav_sign_out"
+        android:name="ie.lit.ardictionary.ui.auth.SignOutFragment"
+        android:label="@string/menu_sign_out"
+        tools:layout="@layout/fragment_sign_out" />
+    <fragment
+        android:id="@+id/nav_words"
+        android:name="ie.lit.ardictionary.ui.word.WordFragment"
+        android:label="@string/menu_words"
+        tools:layout="@layout/fragment_search_result" />
 
 </navigation>

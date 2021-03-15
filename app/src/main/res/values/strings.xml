@@ -12,16 +12,19 @@
     <string name="btn_audio">Audio</string>
 
     <string name="menu_camera">Home</string>
-    <string name="menu_search_result">Word Definition</string>
+    <string name="menu_words">Word Definition</string>
     <string name="menu_authentication">Sign In</string>
+    <string name="menu_sign_out">Sign Out</string>
     <string name="menu_notebooks">Notebooks</string>
 
     <string name="btn_register">Register</string>
     <string name="btn_sign_in">Sign In</string>
+    <string name="btn_sign_out">Sign Out</string>
     <string name="hint_email_exit_text">Email</string>
     <string name="hint_name_exit_text">Name</string>
     <string name="hint_password_exit_text">Password</string>
     <string name="hint_confirm_password_exit_text">Confirm Password</string>
 
     <string name="text_have_an_account">Already have an account? Sign in</string>
+    <string name="text_confirm_logout">Are you sure you want to sign out?</string>
 </resources>

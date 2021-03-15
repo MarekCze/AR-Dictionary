@@ -59,4 +59,8 @@ public class AuthViewModel extends AndroidViewModel {
         authRepository.signInAnonymously(context);
     }
 
+    public void signOut(Context context){
+        authRepository.signOut(context);
+    }
+
 }

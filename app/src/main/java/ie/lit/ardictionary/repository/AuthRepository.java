@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -43,7 +44,6 @@ public class AuthRepository {
 
     public AuthRepository(Application application){
         this.application = application;
-
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         collection = db.collection("Users");
@@ -142,6 +142,18 @@ public class AuthRepository {
                     }
                 });
 
+    }
+
+    public void signOut(Context context){
+        AuthUI.getInstance().signOut(context).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    firebaseUserMutableLiveData.postValue(null);
+                    userMutableLiveData.postValue(null);
+                }
+            }
+        });
     }
 
     private void createUser(FirebaseUser firebaseUser, String type){

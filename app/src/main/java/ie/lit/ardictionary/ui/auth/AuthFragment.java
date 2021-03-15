@@ -36,8 +36,6 @@ import ie.lit.ardictionary.R;
 
 public class AuthFragment extends Fragment {
 
-    private FirebaseFirestore db;
-    private FirebaseAuth mAuth;
     private Button googleBtn, emailBtn, anonBtn;
     private View root;
     private AuthViewModel authViewModel;
@@ -54,7 +52,6 @@ public class AuthFragment extends Fragment {
         googleBtn = root.findViewById(R.id.sign_in_button_google);
         anonBtn = root.findViewById(R.id.sign_in_button_anonymous);
 
-        mAuth = FirebaseAuth.getInstance();
         context = getActivity();
 
         authViewModel = new ViewModelProvider(getActivity()).get(AuthViewModel.class);
@@ -123,6 +120,7 @@ public class AuthFragment extends Fragment {
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("TAG", "Google sign in failed", e);
+                Log.w("TAG", e.getMessage());
                 // ...
             }
         }

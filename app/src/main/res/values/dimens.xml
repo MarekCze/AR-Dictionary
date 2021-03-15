@@ -5,13 +5,16 @@
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="word_card_heading_size">32dp</dimen>
+
     <dimen name="regular_font_size">16dp</dimen>
     <dimen name="notebook_font_size">4dp</dimen>
+
+    <dimen name="word_card_heading_size">32dp</dimen>
     <dimen name="word_card_margin">8dp</dimen>
     <dimen name="word_card_padding">8dp</dimen>
     <dimen name="word_card_heading_padding">8dp</dimen>
     <dimen name="word_card_audio_btn_padding">16dp</dimen>
+
     <dimen name="sign_in_button_height">48dp</dimen>
     <dimen name="sign_in_button_margin">64dp</dimen>
     <dimen name="sign_in_button_margin_top">24dp</dimen>
@@ -19,5 +22,7 @@
     <dimen name="register_form_logo_margin_top">150dp</dimen>
     <dimen name="register_form_logo_margin">64dp</dimen>
     <dimen name="register_form_logo_size">180dp</dimen>
+    <dimen name="sign_out_horizontal_margin">50dp</dimen>
+    <dimen name="sign_out_vertical_margin">250dp</dimen>
 
 </resources>

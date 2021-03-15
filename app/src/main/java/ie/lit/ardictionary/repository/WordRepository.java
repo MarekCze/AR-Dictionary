@@ -109,7 +109,6 @@ public class WordRepository {
 
         notebookCollectionRef = db.collection("Users/" + user.getUid() + "/Notebooks");
 
-
         notebookCollectionRef.document(notebook.getUid()).set(notebook).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

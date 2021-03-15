@@ -72,15 +72,18 @@ public class MainActivity extends AppCompatActivity {
         // init navigation
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_camera, R.id.nav_search_result, R.id.nav_authentication)
+                R.id.nav_camera, R.id.nav_notebooks, R.id.nav_authentication)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        Menu menu = navigationView.getMenu();
 
         // check permissions
         if(!allPermissionsGranted()) {
@@ -93,40 +96,55 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(User user) {
 
                 FragmentManager fm = getSupportFragmentManager();
-
                 Toast text;
-                switch(user.getType()){
-                    case "email":
-                        if(!user.isNewUser()){
-                            Fragment signInFragment = fm.findFragmentByTag("Email sign in fragment");
-                            Fragment registerFragment = fm.findFragmentByTag("Email register fragment");
-                            fm.beginTransaction()
-                                    .remove(signInFragment)
-                                    .remove(registerFragment)
-                                    .commit();
-                            fm.popBackStack();
-                        } else {
-                            fm.popBackStackImmediate();
-                        }
 
-                        text = Toast.makeText(getApplicationContext(), "Signed in with email", Toast.LENGTH_SHORT);
-                        text.show();
-                        break;
-                    case "google":
-                        fm.popBackStackImmediate();
-                        text = Toast.makeText(getApplicationContext(), "Signed in with Google", Toast.LENGTH_SHORT);
-                        text.show();
-                        break;
-                    case "anonymous":
-                        fm.popBackStackImmediate();
-                        text = Toast.makeText(getApplicationContext(), "Signed in as guest", Toast.LENGTH_SHORT);
-                        text.show();
-                        break;
-                }
-            }
+                if(user != null){
+                    switch(user.getType()){
+                        case "email":
+                            if(!user.isNewUser()){
+                                menu.removeItem(R.id.nav_authentication);
+                                Fragment signInFragment = fm.findFragmentByTag("Email sign in fragment");
+                                Fragment registerFragment = fm.findFragmentByTag("Email register fragment");
+                                fm.beginTransaction()
+                                        .remove(signInFragment)
+                                        .remove(registerFragment)
+                                        .commit();
+                                fm.popBackStack();
+                            } else {
+                                menu.removeItem(R.id.nav_authentication);
+                                fm.popBackStackImmediate();
+                            }
+
+                            text = Toast.makeText(getApplicationContext(), "Signed in with email", Toast.LENGTH_SHORT);
+                            text.show();
+                            break;
+                        case "google":
+                            menu.removeItem(R.id.nav_authentication);
+                            fm.popBackStackImmediate();
+                            text = Toast.makeText(getApplicationContext(), "Signed in with Google", Toast.LENGTH_SHORT);
+                            text.show();
+                            break;
+                        case "anonymous":
+                            menu.removeItem(R.id.nav_sign_out);
+                            fm.popBackStackImmediate();
+                            text = Toast.makeText(getApplicationContext(), "Signed in as guest", Toast.LENGTH_SHORT);
+                            text.show();
+                            break;
+                    } // END switch
+                } else {
+                    fm.popBackStackImmediate();
+                    text = Toast.makeText(getApplicationContext(), "Signed out", Toast.LENGTH_SHORT);
+                    text.show();
+                    Fragment authFragment = new AuthFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.frameLayout, authFragment, "Auth Fragment")
+                            .addToBackStack(null)
+                            .commit();
+                } // END if else
+            } // END onChanged
         });
 
-    }
+    } // END onCreate
 
     @Override
     protected void onStart() {

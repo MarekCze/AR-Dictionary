@@ -13,15 +13,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-
 import java.util.List;
 
 import ie.lit.ardictionary.MainActivity;
 import ie.lit.ardictionary.R;
 import ie.lit.ardictionary.model.Notebook;
-import ie.lit.ardictionary.model.Word;
 import ie.lit.ardictionary.ui.word.WordFragment;
 
 public class NotebookAdapter extends RecyclerView.Adapter<NotebookAdapter.NotebookViewHolder> {
@@ -94,11 +90,12 @@ public class NotebookAdapter extends RecyclerView.Adapter<NotebookAdapter.Notebo
                 Bundle bundle = new Bundle();
                 bundle.putString("notebookId", notebook.getUid());
 
+                String fragmentTag = "Word Fragment";
                 Fragment wordFragment = new WordFragment();
                 wordFragment.setArguments(bundle);
                 ((MainActivity) context).getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.notebook_layout, wordFragment, "Word Fragment")
-                        .addToBackStack(null)
+                        .add(R.id.notebook_layout, wordFragment, fragmentTag)
+                        .addToBackStack(fragmentTag)
                         .commit();
             }
         });
