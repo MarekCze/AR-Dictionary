@@ -55,9 +55,6 @@ public class WordRepository {
 
     public WordRepository(Application application){
         this.application = application;
-
-        db = FirebaseFirestore.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
         wordMutableLiveData = new MutableLiveData();
         wordListMutableLiveData = new MutableLiveData();
     }
@@ -83,6 +80,9 @@ public class WordRepository {
     }
 
     public void getNotebookWords(String notebookId){
+        db = FirebaseFirestore.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         CollectionReference wordCollectionRef = db.collection("Users/" + user.getUid() + "/Notebooks/" + notebookId + "/Words");
         wordCollectionRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -97,6 +97,9 @@ public class WordRepository {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void saveWord(Word word){
+        db = FirebaseFirestore.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         String notebookName = word.getDate();
         Notebook notebook = new Notebook();
         notebook.setName(notebook.getDayOfWeek().toString());

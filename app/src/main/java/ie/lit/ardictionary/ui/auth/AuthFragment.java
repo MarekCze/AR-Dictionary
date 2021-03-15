@@ -38,8 +38,7 @@ public class AuthFragment extends Fragment {
 
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
-    private Button fbBtn, emailBtn, anonBtn;
-    private SignInButton googleBtn;
+    private Button googleBtn, emailBtn, anonBtn;
     private View root;
     private AuthViewModel authViewModel;
     private Context context;
@@ -53,7 +52,6 @@ public class AuthFragment extends Fragment {
 
         emailBtn = root.findViewById(R.id.sign_in_button_email);
         googleBtn = root.findViewById(R.id.sign_in_button_google);
-        fbBtn = root.findViewById(R.id.sign_in_button_facebook);
         anonBtn = root.findViewById(R.id.sign_in_button_anonymous);
 
         mAuth = FirebaseAuth.getInstance();
@@ -92,13 +90,6 @@ public class AuthFragment extends Fragment {
                 GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(context, gso);
 
                 signIn(mGoogleSignInClient);
-            }
-        });
-
-        fbBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
 

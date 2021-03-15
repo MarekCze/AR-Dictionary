@@ -61,12 +61,14 @@ public class WordDeserializer implements JsonDeserializer<Word> {
             w.setDefinitions(definitions);
 
             // loop through examples array and set sentences
-            List<String> sentences = new ArrayList();
-            for(JsonElement el : senses.get("examples").getAsJsonArray()){
+            if(senses.has("examples")){
+                List<String> sentences = new ArrayList();
+                for(JsonElement el : senses.get("examples").getAsJsonArray()){
 
-                sentences.add(el.getAsJsonObject().get("text").getAsString());
+                    sentences.add(el.getAsJsonObject().get("text").getAsString());
+                }
+                w.setSentences(sentences);
             }
-            w.setSentences(sentences);
 
             // loop through synonyms array and set synonyms
             if(senses.has("synonyms")){

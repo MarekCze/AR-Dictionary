@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
         // init Firebase
         db = FirebaseFirestore.getInstance();
-
         mAuth = FirebaseAuth.getInstance();
 
         // init ViewModels
