@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -65,41 +66,65 @@ public class AuthRepository {
 
     public void signInWithGoogle(Context context, GoogleSignInAccount account){
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                            createUser(firebaseUser, "google");
-                            firebaseUserMutableLiveData.postValue(firebaseUser);
 
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.d("TAG", "signInWithCredential:failure", task.getException());
-                        }
-                    }
-                });
+        if(mAuth.getCurrentUser() != null){
+            mAuth.getCurrentUser().linkWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "linkWithGoogleCredential:success");
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        createUser(firebaseUser, "google");
+                        firebaseUserMutableLiveData.postValue(firebaseUser);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.d("TAG", "linkWithGoogleCredential:failure", task.getException());
+                    } // END inner if else
+                } // END onComplete method
+            }); // END onCompleteListener
+        } else {
+            mAuth.signInWithCredential(credential)
+                    .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "signInWithCredential:success");
+                                FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                                createUser(firebaseUser, "google");
+                                firebaseUserMutableLiveData.postValue(firebaseUser);
+
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.d("TAG", "signInWithCredential:failure", task.getException());
+                            } // END inner if else
+                        } // END onComplete method
+                    }); // END onCompleteListener
+        } // END outer if else
     }
 
 
     public void createUserWithEmailAndPassword(User user){
         Log.w("TAG", "signInWithEmail:failure");
-        mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Log.d(TAG, "signInWithEmail:success");
-                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                    createUser(firebaseUser, "email");
-                    firebaseUserMutableLiveData.postValue(firebaseUser);
-                } else {
-                    Log.d(TAG, "signInWithEmail:failure");
+        AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), user.getPassword());
+        if(mAuth.getCurrentUser() != null){
+            linkAnonymousAccount(credential);
+        } else {
+            mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        Log.d(TAG, "signInWithEmail:success");
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        createUser(firebaseUser, "email");
+                        firebaseUserMutableLiveData.postValue(firebaseUser);
+                    } else {
+                        Log.d(TAG, "signInWithEmail:failure");
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public void signInWithEmailAndPassword(User user){
@@ -116,10 +141,6 @@ public class AuthRepository {
                 }
             }
         });
-    }
-
-    public void signInWithFacebook(){
-
     }
 
     public void signInAnonymously(Context context){
@@ -142,6 +163,24 @@ public class AuthRepository {
                     }
                 });
 
+    }
+
+    private void linkAnonymousAccount(AuthCredential credential) {
+        mAuth.getCurrentUser().linkWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "linkWithCredential:success");
+                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                    createUser(firebaseUser, "google");
+                    firebaseUserMutableLiveData.postValue(firebaseUser);
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.d("TAG", "linkWithCredential:failure", task.getException());
+                } // END inner if else
+            } // END onComplete method
+        }); // END onCompleteListener
     }
 
     public void signOut(Context context){
