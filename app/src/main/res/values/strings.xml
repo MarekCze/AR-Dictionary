@@ -17,6 +17,12 @@
     <string name="menu_sign_out">Sign Out</string>
     <string name="menu_notebooks">Notebooks</string>
 
+    <string name="action_notebook_change_name">Change Name</string>
+    <string name="action_notebook_delete">Delete Notebook</string>
+    <string name="action_word_add_to_notebook">Add To Notebook</string>
+    <string name="action_word_move_to_notebook">Move To Notebook</string>
+    <string name="action_word_delete">Delete Word</string>
+
     <string name="btn_register">Register</string>
     <string name="btn_sign_in">Sign In</string>
     <string name="btn_sign_out">Sign Out</string>

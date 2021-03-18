@@ -32,6 +32,7 @@ import java.util.List;
 
 import ie.lit.ardictionary.R;
 import ie.lit.ardictionary.model.Word;
+import ie.lit.ardictionary.ui.word.WordViewModel;
 
 public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder> {
 
@@ -82,9 +83,63 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
         holder.definitionTextView.setText(buildBulletPointList(word.getDefinitions()));
         holder.synonymTextView.setText(buildBulletPointList(word.getSynonyms()));
         holder.sentencesTextView.setText(buildBulletPointList(word.getSentences()));
+        holder.itemView.setBackgroundResource(R.drawable.btn_background_white);
+
+        setStyle(holder, word);
+
+        holder.audioBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MediaPlayer mp = new MediaPlayer();
+                if(!isPlaying){
+                    isPlaying = true;
+                    try {
+                        mp.setDataSource(word.getAudio());
+                        mp.prepare();
+                        mp.start();
+                    } catch (IOException e) {
+                        Log.e("Err Tag", "prepare() failed");
+                    }
+                } else {
+                    isPlaying = false;
+                    mp.release();
+                    mp = null;
+                }
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return words.size();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    private SpannableStringBuilder buildBulletPointList(List<String> bulletPoints){
+
+        SpannableStringBuilder ssb = new SpannableStringBuilder();
+
+        if(bulletPoints != null){
+            for(int i = 0; i < bulletPoints.size(); i++){
+                String s = bulletPoints.get(i);
+                if(i + 1 < bulletPoints.size()){
+                    s += "\n";
+                }
+                CharSequence ch = s;
+                SpannableString ss = new SpannableString(s);
+                ss.setSpan(new BulletSpan(12, Color.parseColor("#000000"), 7), 0, ch.length(), 0);
+                ssb.append(ss);
+            }
+        } else {
+            ssb.append("");
+        }
+        return ssb;
+    }
+
+    private void setStyle(WordViewHolder holder, Word word){
         Drawable drawableWrap = DrawableCompat.wrap(holder.audioBtn.getDrawable()).mutate();
 
-        switch(word.getStyle()){
+        switch(word.getStyle()) {
             case "green":
                 holder.wordTextView.setTextAppearance(context, R.style.CardView_GreenTheme);
                 holder.sentencesHeadingTextView.setTextAppearance(context, R.style.CardView_GreenTheme);
@@ -136,54 +191,6 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
 
                 break;
         }
-
-        holder.audioBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MediaPlayer mp = new MediaPlayer();
-                if(!isPlaying){
-                    isPlaying = true;
-                    try {
-                        mp.setDataSource(word.getAudio());
-                        mp.prepare();
-                        mp.start();
-                    } catch (IOException e) {
-                        Log.e("Err Tag", "prepare() failed");
-                    }
-                } else {
-                    isPlaying = false;
-                    mp.release();
-                    mp = null;
-                }
-            }
-        });
-    }
-
-    @Override
-    public int getItemCount() {
-        return words.size();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    private SpannableStringBuilder buildBulletPointList(List<String> bulletPoints){
-
-        SpannableStringBuilder ssb = new SpannableStringBuilder();
-
-        if(bulletPoints != null){
-            for(int i = 0; i < bulletPoints.size(); i++){
-                String s = bulletPoints.get(i);
-                if(i + 1 < bulletPoints.size()){
-                    s += "\n";
-                }
-                CharSequence ch = s;
-                SpannableString ss = new SpannableString(s);
-                ss.setSpan(new BulletSpan(12, Color.parseColor("#000000"), 7), 0, ch.length(), 0);
-                ssb.append(ss);
-            }
-        } else {
-            ssb.append("");
-        }
-        return ssb;
     }
 
 }

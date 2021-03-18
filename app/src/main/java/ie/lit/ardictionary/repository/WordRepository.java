@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
@@ -105,7 +106,7 @@ public class WordRepository {
         notebook.setName(notebook.getDayOfWeek().toString());
         notebook.setUid(notebook.getDate());
 
-        word.setStyle(notebook.getStyle());
+
 
         notebookCollectionRef = db.collection("Users/" + user.getUid() + "/Notebooks");
 
@@ -113,6 +114,7 @@ public class WordRepository {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 CollectionReference wordRef = notebookCollectionRef.document(notebook.getUid()).collection("Words");
+                
                 wordRef.add(word);
             }
         });

@@ -1,6 +1,7 @@
 package ie.lit.ardictionary.ui.word;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import ie.lit.ardictionary.R;
 import ie.lit.ardictionary.adapter.WordAdapter;
 import ie.lit.ardictionary.model.Word;
 import ie.lit.ardictionary.ui.camera.CameraViewModel;
+import ie.lit.ardictionary.ui.notebook.NotebookFragment;
 
 public class WordFragment extends Fragment {
     private WordViewModel wordViewModel;
@@ -86,5 +88,23 @@ public class WordFragment extends Fragment {
         wordRecyclerView.setLayoutManager(mLayoutManager);
         wordRecyclerView.setItemAnimator(new DefaultItemAnimator());
         wordRecyclerView.setAdapter(wordAdapter);
+        wordRecyclerView.addItemDecoration(new WordFragment.SpacingDecoration(16));
+    }
+
+    private class SpacingDecoration extends RecyclerView.ItemDecoration {
+        private int spacing;
+
+        public SpacingDecoration(int spacing){
+            this.spacing = spacing;
+        }
+
+        @Override
+        public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+
+            outRect.left = spacing;
+            outRect.right = spacing;
+            outRect.bottom = spacing;
+        }
     }
 }

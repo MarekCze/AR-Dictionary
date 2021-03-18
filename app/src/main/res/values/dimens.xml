@@ -6,8 +6,8 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-    <dimen name="regular_font_size">16dp</dimen>
-    <dimen name="notebook_font_size">4dp</dimen>
+    <dimen name="regular_font_size">16sp</dimen>
+    <dimen name="notebook_font_size">4sp</dimen>
 
     <dimen name="word_card_heading_size">32dp</dimen>
     <dimen name="word_card_margin">8dp</dimen>

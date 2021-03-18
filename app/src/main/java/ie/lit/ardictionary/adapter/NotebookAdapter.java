@@ -3,11 +3,16 @@ package ie.lit.ardictionary.adapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -26,12 +31,14 @@ public class NotebookAdapter extends RecyclerView.Adapter<NotebookAdapter.Notebo
 
     class NotebookViewHolder extends RecyclerView.ViewHolder{
         TextView nameTextView, dateTextView;
+        ImageView overflow;
 
         public NotebookViewHolder(@NonNull View itemView) {
             super(itemView);
 
             nameTextView = itemView.findViewById(R.id.notebookNameTextView);
             dateTextView = itemView.findViewById(R.id.notebookDateTextView);
+            overflow = itemView.findViewById(R.id.overflow);
 
         }
     }
@@ -82,7 +89,12 @@ public class NotebookAdapter extends RecyclerView.Adapter<NotebookAdapter.Notebo
                 break;
         }
 
-
+        holder.overflow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopupMenu(holder.overflow);
+            }
+        });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +117,35 @@ public class NotebookAdapter extends RecyclerView.Adapter<NotebookAdapter.Notebo
     @Override
     public int getItemCount() {
         return notebooks.size();
+    }
+
+    private void showPopupMenu(View view) {
+        // inflate menu
+        PopupMenu popup = new PopupMenu(context, view);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.menu_notebook, popup.getMenu());
+        popup.setOnMenuItemClickListener(new NotebookMenuItemClickListener());
+        popup.show();
+    }
+
+    class NotebookMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
+
+        public NotebookMenuItemClickListener() {
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.action_notebook_change_name:
+                    Toast.makeText(context, "Add to favourite", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.action_notebook_delete:
+                    Toast.makeText(context, "Play next", Toast.LENGTH_SHORT).show();
+                    return true;
+                default:
+            }
+            return false;
+        }
     }
 
 }
