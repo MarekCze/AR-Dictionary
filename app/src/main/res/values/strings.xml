@@ -33,4 +33,6 @@
 
     <string name="text_have_an_account">Already have an account? Sign in</string>
     <string name="text_confirm_logout">Are you sure you want to sign out?</string>
+
+    <string name="camera_prompt">Tap on a word to get the definition</string>
 </resources>
