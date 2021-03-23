@@ -139,6 +139,7 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.WordViewHolder
     private void setStyle(WordViewHolder holder, Word word){
         Drawable drawableWrap = DrawableCompat.wrap(holder.audioBtn.getDrawable()).mutate();
 
+
         switch(word.getStyle()) {
             case "green":
                 holder.wordTextView.setTextAppearance(context, R.style.CardView_GreenTheme);

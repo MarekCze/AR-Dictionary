@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
@@ -30,12 +31,13 @@ public class NotebookRepository {
 
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        notebookCollectionRef = db.collection("Users/" + user.getUid() + "/Notebooks");
+        notebookCollectionRef = (CollectionReference) db.collection("Users/" + user.getUid() + "/Notebooks");
         notebookListMutableLiveData = new MutableLiveData<>();
     }
 
     public void getUserNotebooks(){
-        notebookCollectionRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Query query = notebookCollectionRef.orderBy("dateModified");
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){

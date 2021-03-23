@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
@@ -15,7 +16,7 @@ public class Notebook {
     private String name;
     private String uid;
     private String date;
-    private LocalDate dateModified;
+    private Date dateModified;
     private DayOfWeek dayOfWeek;
     private String style;
 
@@ -25,6 +26,7 @@ public class Notebook {
     public Notebook(){
         LocalDate localDate = LocalDate.now();
         this.dayOfWeek = localDate.getDayOfWeek();
+        this.dateModified = new Date();
         this.date = localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         this.style = setNotebookStyle();
     }
@@ -35,16 +37,17 @@ public class Notebook {
         this.uid = uid;
         this.words = words;
         LocalDate localDate = LocalDate.now();
+        this.dateModified = new Date();
         this.dayOfWeek = localDate.getDayOfWeek();
         this.date = localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         this.style = setNotebookStyle();
     }
 
-    public LocalDate getDateModified() {
+    public Date getDateModified() {
         return dateModified;
     }
 
-    public void setDateModified(LocalDate dateModified) {
+    public void setDateModified(Date dateModified) {
         this.dateModified = dateModified;
     }
 

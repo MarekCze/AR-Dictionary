@@ -57,7 +57,7 @@ public class CameraFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_camera, container, false);
-        // init WordVieModel
+        // init WordViewModel
         wordViewModel = new ViewModelProvider(getActivity()).get(WordViewModel.class);
         // init dictionary API
         context = getActivity();

@@ -101,21 +101,31 @@ public class WordRepository {
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        String notebookName = word.getDate();
         Notebook notebook = new Notebook();
         notebook.setName(notebook.getDayOfWeek().toString());
         notebook.setUid(notebook.getDate());
 
 
-
         notebookCollectionRef = db.collection("Users/" + user.getUid() + "/Notebooks");
+        DocumentReference notebookDocumentRef = notebookCollectionRef.document(notebook.getUid());
 
-        notebookCollectionRef.document(notebook.getUid()).set(notebook).addOnCompleteListener(new OnCompleteListener<Void>() {
+        notebookDocumentRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                CollectionReference wordRef = notebookCollectionRef.document(notebook.getUid()).collection("Words");
-                
-                wordRef.add(word);
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.getResult() != null){
+                    CollectionReference wordRef = notebookCollectionRef.document(notebook.getUid()).collection("Words");
+                    word.setStyle(task.getResult().getString("style"));
+                    wordRef.add(word);
+                } else {
+                    notebookDocumentRef.set(notebook).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            CollectionReference wordRef = notebookCollectionRef.document(notebook.getUid()).collection("Words");
+                            word.setStyle(notebook.getStyle());
+                            wordRef.add(word);
+                        }
+                    });
+                }
             }
         });
     }
@@ -186,6 +196,7 @@ public class WordRepository {
             public void onResponse(Call<Word> call, Response<Word> response) {
                 if(response.isSuccessful()){
                     Word word = response.body();
+                    word.setStyle("green");
                     Log.w(TAG, word.getDate());
                     wordMutableLiveData.postValue(word);
                     saveWord(word);
