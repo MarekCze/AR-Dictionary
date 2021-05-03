@@ -1,7 +1,6 @@
 package ie.lit.ardictionary.ui.camera;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
@@ -25,26 +23,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.gson.Gson;
 
-import ie.lit.ardictionary.MainActivity;
 import ie.lit.ardictionary.R;
-import ie.lit.ardictionary.api.DictionaryApi;
-import ie.lit.ardictionary.api.DictionaryApiInterface;
 import ie.lit.ardictionary.model.Word;
-import ie.lit.ardictionary.ui.gallery.SearchResultFragment;
 import ie.lit.ardictionary.ui.word.WordFragment;
 import ie.lit.ardictionary.ui.word.WordViewModel;
-import ie.lit.ardictionary.utils.TextRecognitionHandler;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-import java.lang.reflect.Type;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class CameraFragment extends Fragment {
 

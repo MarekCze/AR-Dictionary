@@ -153,9 +153,6 @@ public class MainActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        // pass db instance to WordViewModel
-
-
         if(currentUser == null){
             Fragment authFragment = new AuthFragment();
             this.getSupportFragmentManager().beginTransaction()

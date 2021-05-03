@@ -45,7 +45,6 @@ public class AuthFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
         root = inflater.inflate(R.layout.fragment_authentication, container, false);
 
         emailBtn = root.findViewById(R.id.sign_in_button_email);
@@ -89,7 +88,7 @@ public class AuthFragment extends Fragment {
                 signIn(mGoogleSignInClient);
             }
         });
-
+        // if user is not null and is aninymous, remove guest sign in button from sign in fragment
         if(authViewModel.getUserMutableLiveData().getValue() != null && authViewModel.getUserMutableLiveData().getValue().getType() == "anonymous"){
             anonBtn.setVisibility(View.GONE);
         } else {
