@@ -105,19 +105,19 @@ public class WordRepository {
         notebook.setName(notebook.getDayOfWeek().toString());
         notebook.setUid(notebook.getDate());
 
-
         notebookCollectionRef = db.collection("Users/" + user.getUid() + "/Notebooks");
-        DocumentReference notebookDocumentRef = notebookCollectionRef.document(notebook.getUid());
 
-        notebookDocumentRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        notebookCollectionRef.document(notebook.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.getResult() != null){
+                if(task.getResult().exists()){
+                    Log.w("TAG", "inside not null");
                     CollectionReference wordRef = notebookCollectionRef.document(notebook.getUid()).collection("Words");
                     word.setStyle(task.getResult().getString("style"));
                     wordRef.add(word);
                 } else {
-                    notebookDocumentRef.set(notebook).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    Log.w("TAG", "inside null");
+                    notebookCollectionRef.document(notebook.getUid()).set(notebook).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             CollectionReference wordRef = notebookCollectionRef.document(notebook.getUid()).collection("Words");

@@ -7,7 +7,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
-import ie.lit.ardictionary.R;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -16,30 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import ie.lit.ardictionary.model.User;
 import ie.lit.ardictionary.ui.auth.AuthFragment;
 import ie.lit.ardictionary.ui.auth.AuthViewModel;
-import ie.lit.ardictionary.ui.auth.EmailSignInFragment;
-import ie.lit.ardictionary.ui.camera.CameraViewModel;
 import ie.lit.ardictionary.ui.word.WordViewModel;
-
-import com.firebase.ui.auth.AuthUI;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -94,10 +85,8 @@ public class MainActivity extends AppCompatActivity {
         authViewModel.getUserMutableLiveData().observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
-
                 FragmentManager fm = getSupportFragmentManager();
                 Toast text;
-
                 if(user != null){
                     switch(user.getType()){
                         case "email":
@@ -114,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
                                 menu.removeItem(R.id.nav_authentication);
                                 fm.popBackStackImmediate();
                             }
-
                             text = Toast.makeText(getApplicationContext(), "Signed in with email", Toast.LENGTH_SHORT);
                             text.show();
                             break;

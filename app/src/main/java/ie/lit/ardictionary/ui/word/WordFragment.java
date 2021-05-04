@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,8 +23,6 @@ import java.util.List;
 import ie.lit.ardictionary.R;
 import ie.lit.ardictionary.adapter.WordAdapter;
 import ie.lit.ardictionary.model.Word;
-import ie.lit.ardictionary.ui.camera.CameraViewModel;
-import ie.lit.ardictionary.ui.notebook.NotebookFragment;
 
 public class WordFragment extends Fragment {
     private WordViewModel wordViewModel;
